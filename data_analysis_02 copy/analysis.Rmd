@@ -1,0 +1,292 @@
+---
+title: "confederate_monuments_analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Load libraries 
+```{r}
+# install.packages("leaflet")
+library(tidyverse)
+library(janitor)
+library(leaflet)
+
+
+```
+
+## Load data
+```{r}
+heritage<- read_csv("data/whose_heritage.csv")%>%
+  clean_names()%>%
+  separate(coordinates, into = c("lat", "lng"),sep =",")%>%
+  mutate(lat = as.numeric(lat), 
+         lng = as.numeric(lng))
+
+# Creating list of border states 
+
+side<-heritage%>%
+  rename(clean_side = side)%>%
+  group_by(state, clean_side)%>%
+  count()%>%
+  filter(!is.na(clean_side))%>%
+  arrange(state)%>%
+  mutate(clean_side = case_when(
+    state =="AL" ~ "South", 
+    state =="AR" ~ "South",
+    state == "TX" ~ "South",
+    state == "VA" ~ "South",
+    TRUE ~ clean_side
+  ))%>%
+  select(-n)%>%
+  distinct()
+
+
+# Join cleaned side with heritage 
+heritage<- heritage%>%
+  inner_join(side, by = c("state"))%>%
+  select(-side)%>%
+  rename(side = clean_side)
+  
+  
+```
+## Exploratory analysis 
+```{r}
+heritage%>%
+  group_by(state)%>%
+  count()%>%
+  arrange(desc(n))
+  
+```
+
+## Data Analysis Project #2, group 2:
+### Which Northern state has the most confederate monuments 
+```{r}
+
+#
+
+northern_states<- heritage%>%
+  filter (side =="North")%>%
+  group_by(state)%>%
+  summarise(count = n())%>%
+  arrange(desc(count))
+
+northern_states
+
+heritage%>%
+  group_by(state, side)%>%
+  summarize(count = n())
+
+oh <-heritage%>%
+  filter( state =="OH")
+
+# Doesn't give us an accurate picture — Cali has more "monuments" than other "northern" states, but some have an N/A value under "Northern." Wonder why! 
+
+
+
+```
+
+```{r}
+heritage%>%
+  filter( tracking_status != "Removed", side == "North")%>%
+  group_by(symbol_type)%>%
+  count()
+```
+
+```{r}
+
+# Makin' a map
+
+heritage%>%
+  filter(state == "CA", tracking_status != "Removed")%>%
+  leaflet()%>%
+  addProviderTiles(provider = "CartoDB.Positron")%>%
+  addMarkers(lat = ~lat, lng = ~lng, 
+             label = ~unique_id)
+# Only the monuments in Dc that are 
+
+```
+
+###How many confederate monuments in Cali? 
+```{r}
+
+#Finding the number of confederate monuments in CA 
+# Starting with the heritage dataframe
+# and then, grouping the frame by state
+# and then, counting the number of monuments in each state
+# and then , filtering to return just the California row
+
+heritage%>%
+  group_by(state)%>%
+  count()%>%
+  filter(state =="CA")
+  
+```
+
+```{r}
+# Finding out the geographic spread of California's monuments 
+california <-heritage%>%
+  filter(state == "CA")%>%
+  group_by(county)%>%
+  count()
+
+california
+# Q: is there a geographic concentration of monuments in any particular area of California?  
+# A: There is not — the monuments are spread out across several counties in different parts of California (some are more inland, some coastal, some in the north and others in the south) 
+```
+
+##Who
+```{r}
+
+#Who is responsible for putting these monuments up?
+
+cali_who <-heritage %>%
+  filter(state== "CA")%>%
+  group_by(sponsors)%>%
+  count()
+cali_who
+#the data shows that the United Daughters of the Confederacy lead the sponsors with 7 monuments
+```
+```{r}
+# When were they put up?
+
+cali_when<- heritage%>%
+  filter(state== "CA")%>%
+  group_by(year_dedicated)%>%
+  count()
+
+cali_when
+
+#A: As late as 1959, with 4 unknown
+```
+
+```{r}
+#What kinds of symbols are currently in existence? How can we begin to investigate if they are on public or private land?
+cali_what <-heritage %>%
+  filter(state== "CA")%>%
+  group_by(symbol_type, symbol_category)%>%
+  count()
+cali_what
+#We see that there is a variety in the origins of the symbols, and no conclusive information within this data set about who owns the land.
+
+```
+##How many monuments in Cali have come down? When were they taken down — before/after Floyd?
+
+```{r}
+# part 1: How many monuments in Cali have come down?
+cali_monuments_down <- heritage %>%
+  filter(state == "CA") %>%
+  filter(tracking_status %in% c("Removed", "Renamed"))%>%
+  group_by(year_removed)%>%
+  count()
+ 
+cali_monuments_down
+
+# A: 6
+```
+
+```{r}
+# part 2: When were they taken down — before/after Floyd?
+cali_monuments_down_bf_floyd <- cali_monuments_down %>%
+  filter(year_removed < 2020,) %>%
+  arrange(desc(year_removed))
+ 
+cali_monuments_down_bf_floyd
+
+# Before Floyd: *5 (see answer below for reasoning behind "*"). two in 2016, and one in 2017, 2018 and 2019.
+
+cali_monuments_down_af_floyd <- cali_monuments_down %>%
+  filter(year_removed >= 2020) %>%
+  arrange(desc(year_removed))
+ 
+cali_monuments_down_af_floyd
+
+# After Floyd: *1, in 2020. George Floyd was killed in 2020 and only one monument was removed/renamed in that year. Floyd was killed in the spring, so it's possible that this monument was taken down prior to his death, but given the large-scale removal of confederate monuments in the wake of his death, it's more likely that this monument was taken down in reaction to the tragedy and unrest that followed. 
+# Essentially, we know one was removed in 2020, but we have to consult other data to glean the exact date in 2020 to see if it was before or after George Floyd was slain.
+```
+```{r}
+
+heritage%>%
+    group_by(year_removed)%>%
+    filter(state == "CA")%>%
+    count()%>%
+    arrange(desc(year_removed))
+
+#tells the rate of removals for California
+# only one of the 6 removed, removed this year 
+
+```
+
+
+
+#Virginia
+
+```{r}
+
+#Which southern state has the most confederate monuments?
+
+southern_states<- heritage%>%
+  filter(side=="South")%>%
+  group_by(state)%>%
+  count()%>%
+  arrange(desc(n))
+
+southern_states
+#Virginia — although we now know the "south" indicator is missing quite a few values, seeing as we later see that VA has 301 monuments in total. 
+```
+
+
+```{r}
+#Virginia: How many monuments? How many are taken down/when? Is the rate of change greater than/lesser than cali?(Theresa) 
+heritage %>%
+  group_by(state)%>%
+  count()%>%
+  arrange(desc(n))
+
+#number of total monuments in Virginia:301, most of any state in the data 
+
+```
+```{r}
+
+heritage%>%
+  group_by(year_removed)%>%
+  filter(state == "VA")%>%
+  count()%>%
+  arrange(desc(n))
+
+#shows the rate of monument removals for Virginia: how many are taken down, and in which year's they've been removed 
+#56 removed, 38 of which were removed this year 
+
+```
+```{r}
+
+heritage%>%
+    group_by(year_removed)%>%
+    count()%>%
+    arrange(desc(n))
+
+#peak years of removals in all states are 2020 and 2017
+```
+
