@@ -11,7 +11,7 @@ The majority of the code in this repository was written by me.
 
 ## Analysis of national OSHA records
 
-The weighted comparitive analysis in [OSHA_investigation_samples.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/howard_center_OSHA_investigation_examples/OSHA_investigation_samples.Rmd) on OSHA complaints in federal and state-plan states returned one of the key findings in the Howard Center for Investigative Journalism's stories on worker safey during COVID-19. 
+The weighted comparative analysis in [OSHA_investigation_samples.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/howard_center_OSHA_investigation_examples/OSHA_investigation_samples.Rmd) on OSHA complaints in federal and state-plan states returned one of the key findings in the Howard Center for Investigative Journalism's stories on worker safey during COVID-19. 
 
 The analysis I did to get a count of outbreaks in New Mexico stores revealed that nearly all the Walmart-owned stores in the state had seen an associated coronavirus outbreak.
 
