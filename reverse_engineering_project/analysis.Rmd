@@ -1,6 +1,6 @@
 ---
 title: "car race deaths data"
-author: "Rayonna Burton-Jernigan, Sahana Jayaraman, Jeremy Tombs, Theresa Cotton, and Manuela Lopez Restrepo" 
+author: "Sahana Jayaraman, Rayonna Burton-Jernigan, Jeremy Tombs, Theresa Cotton, and Manuela Lopez Restrepo" 
 date: "11/1/2020"
 output: 
   html_document:
@@ -130,6 +130,7 @@ death_by_city_pop <- death_by_city%>%
 death_by_city_pop
 
 ```
+
 ### Sentence 2
 
 The deadliest year on record was 2007, with 18 fatal crashes. After a period with relatively few recorded deaths, the count grew in recent years, with 15 fatalities in 2015, 11 in 2016 and 12 deaths in 2017, the Times analysis shows.

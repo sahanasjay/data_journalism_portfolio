@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-The purpose of this document is to display the analysis behind the five findings that generated the story group 2 pitched for our final. Each finding is a header, with the code that engineers that finding listed below with line-by-line descriptions. Using the Southern Poverty Law Center's Whose Heritage dataset, our story centers on 3 trees in California, all named after Robert E. Lee. 
+The purpose of this document is to display the analysis behind the five findings on Confederate symbols that could drive a story delving into why there's a differential rate of Confederate symbol removal in Northern and Southern states — and why some symbols seem to stick around. Each finding is a header, with the code that engineers that finding listed below with line-by-line descriptions. Using the Southern Poverty Law Center's Whose Heritage dataset, our story centers on 3 trees in California, all named after Robert E. Lee. 
 
 ##Load Libraries 
 ```{r}
