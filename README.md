@@ -11,7 +11,7 @@ The majority of the code in this repository was written by me.
 
 ## Analysis of national OSHA records
 
-Comparitive analysis on OSHA complaints in federal and state-plan states, weighted by the number of workers in each state, returned one of the key findings in the Howard Center for Investigative Journalism's stories on worker safey during COVID-19. 
+the weighted comparitive analysis in [OSHA_investigation_samples.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/howard_center_OSHA_investigation_examples/OSHA_investigation_samples.Rmd) on OSHA complaints in federal and state-plan states returned one of the key findings in the Howard Center for Investigative Journalism's stories on worker safey during COVID-19. 
 
 The analysis I did to get a count of outbreaks in New Mexico stores revealed that nearly all the Walmart-owned stores in the state had seen an ssociated coronavirus outbreak.
 
@@ -27,6 +27,8 @@ My analysis led to the finding that Northern states, though they have less confe
 
 I edited and commented all code for this project, and wrote the majority of it. 
 
+See my work [here](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/heritage_analysis_project/heritage_analysis_final.Rmd). 
+
 ## Analysis of College Park housing prices  
 
 Even before I began learning how to code, I was writing data-driven stories. [This one](https://dbknews.com/2019/12/29/umd-college-park-student-housing-rent-prices-expensive-vacancy-commons-varsity-view/) centers on the astronomical student housing prices in College Park, Maryland — and why they're unlikely to come down anytime soon. 
@@ -37,11 +39,15 @@ Read the story [here](https://dbknews.com/2019/12/29/umd-college-park-student-ho
 
 ## Reverse engineering project 
 
-I went through the process of recreating core findings from "[Out of control](https://www.latimes.com/projects/la-me-street-racing/)", a story about a story about street racing fatalities from the Los Angeles Times.
+I went through the process of [recreating core findings](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/reverse_engineering_project/analysis.Rmd) from "[Out of control](https://www.latimes.com/projects/la-me-street-racing/)", a story about a story about street racing fatalities from the Los Angeles Times.
 
 I edited, cleaned and commented all of the code for this project, and wrote a significant portion of it. 
+
+See my work [here](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/reverse_engineering_project/analysis.Rmd). 
 
 ## Senior edition fact-check 
 
 To fact-check two graphics using survey data for The Diamondback's 2021 Senior Edition, I loaded and cleaned the data and performed some analysis on it.
+
+See my work [here](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/senior_edition_data_fact_check/senior_edition_data.Rmd). 
  
