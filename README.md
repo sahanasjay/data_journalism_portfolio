@@ -17,13 +17,13 @@ The analysis I did to get a count of outbreaks in New Mexico stores revealed tha
 
 Working on this project has exponentially increased my data analysis skills: in addition to learning how to create for loops and functions, I grew more comfortable with baseR, the tidyverse package, the lubridate package, the janitor package and many others. 
 
-The project will be published in the coming weeks. 
+The project will be published in May 2020. 
 
 ## Analysis of Southern Poverty Law center's Whose Heritage database
 
-I went through the process of finding a story through data, spearheading a small groupo of classmates to parse the Southern Poverty Law Center's "Whose Heritage?" data base, which contains a count of statues, placards, public parks, buildings and other symbols dedicated to the Confederacy.
+I went through the process of creating a data-driven story, spearheading a small group of classmates to parse the Southern Poverty Law Center's "Whose Heritage?" database, which contains a count of statues, placards, public parks, buildings and other symbols dedicated to the Confederacy.
 
-My analysis led to the finding that Northern states, though they have less confederate symbols than southern states, have a higher percentage of monuments removed. Additionally, I pinpointed three trees named after Robert E. Lee in California National Parks that hadn't been removed or renamed, even after almost half of the state's confederate monuments had been taken down. 
+My analysis led to the finding that Northern states, though they have less confederate symbols than Southern states, have a higher percentage of symbols removed. Additionally, I pinpointed three trees named after Robert E. Lee in California National Parks that hadn't been removed or renamed, even after almost half of the state's confederate symbols had been taken down. 
 
 I edited and commented all code for this project, and wrote the majority of it. 
 
@@ -39,7 +39,7 @@ Read the story [here](https://dbknews.com/2019/12/29/umd-college-park-student-ho
 
 ## Reverse engineering project 
 
-I went through the process of [recreating core findings](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/reverse_engineering_project/analysis.Rmd) from "[Out of control](https://www.latimes.com/projects/la-me-street-racing/)", a story about a story about street racing fatalities from the Los Angeles Times.
+I went through the process of [recreating core findings](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/reverse_engineering_project/analysis.Rmd) from "[Out of control](https://www.latimes.com/projects/la-me-street-racing/)", a story about street racing fatalities from the Los Angeles Times.
 
 I edited, cleaned and commented all of the code for this project, and wrote a significant portion of it. 
 
