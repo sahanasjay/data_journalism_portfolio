@@ -1,0 +1,270 @@
+---
+title: "final_script"
+output:
+  html_document:
+    theme: cerulean
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## R Markdown
+
+This is an R Markdown document, detailing some of the work I have completed on a long-term investigative project at the Howard Center for Investigative Journalism. The project looks into worker safety during COVID-19 — and the ways in which government agencies and private companies alike failed essential workers. 
+
+## General Themes
+
+
+
+##Libraries
+```{r}
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(lubridate)
+library(tigris)
+library(DT)
+```
+
+##Sources
+### This function is not written by me. It was created by one of my colleagues at the Howard Center, and served to create 
+
+```{r}
+
+#Function to combine the federal osha database of state and osha plan offices into one file
+source("sources/combine_osha_covid_19_complaint_data.R")
+```
+
+# Read in OSHA complaint data
+```{r}
+# read in closed complaints -------------------------
+osha_closed_complaints = read_excel("data/Closed_Federal_State_Plan_COVID-19_Complaints_Through_0307_2021.xlsx")
+
+# read in open complaints -------------------------
+osha_open_complaints = read_excel("data/Open_Federal_and_State_Plan_Valid_Covid-19_Complaints_through_0307_2021.xlsx")
+
+#combine ---------------------------------
+osha_complaints = combine_osha(osha_open_complaints, osha_closed_complaints)
+osha_complaints_date = "2021-03-07"
+
+#add new features to osha complaints -------------------------
+
+osha_complaints = osha_complaints %>% 
+  mutate(months_between = time_length(interval(ymd(upa_receipt_date), ymd(osha_complaints_date)), "month"))
+
+```
+
+
+# Weighting by worker population
+```{r}
+# Data for weighting analysis -------------------------
+
+# load 2020 employment data
+# source: https://www.bls.gov/charts/state-employment-and-unemployment/employment-by-state-bar.htm
+
+worker_data<- read_excel("data/employment_stats.xlsx")%>%
+  clean_names()
+
+federal_state_plan_key <- read_excel("data/federal_versus_state_key.xlsx",
+    col_types = c("text", "text", "text"))
+
+state_list<- fips_codes%>%
+  distinct(state, state_name)
+
+worker_data = left_join(worker_data, state_list, by = c("state" ="state_name" ))
+worker_data = worker_data %>%  mutate(total_employment = total_employment_thousands * 1000) 
+
+```
+
+# Finding the number of complaints per ten thousand workers in federal and state plan states 
+```{r}
+complaints_by_office_1 = osha_complaints %>% 
+  group_by(rid_state_key, office_type) %>% 
+  summarise(num = n()) %>% 
+  left_join(federal_state_plan_key, by = c("rid_state_key" = "state")) %>% 
+  #filter out the federal plan complaints that are in a state plan state
+  mutate(federal_in_state = case_when(
+    office_type == "federal_plan_office" & plan_type == "state_plan" & coverage == "private_state-local" ~ "remove"
+  )) %>% 
+  #this gets rid of the federal complaints in the state plan states
+  filter(is.na(federal_in_state) == TRUE)
+
+complaints_by_office_2 = osha_complaints %>% 
+  group_by(rid_state_key, office_type) %>% 
+  summarise(num = n()) %>% 
+  left_join(federal_state_plan_key, by = c("rid_state_key" = "state")) %>% 
+  #filter out the federal plan complaints that are in a state plan state
+  mutate(federal_in_state = case_when(
+    office_type == "federal_plan_office" & plan_type == "state_plan" & coverage == "private_state-local" ~ "remove"
+  )) %>% 
+  mutate(state_in_partial = case_when(
+    office_type == "state_plan_office" & plan_type == "state_plan" & coverage == "state-local" ~ "remove"
+  )) %>% 
+  #this gets rid of the federal complaints in the state plan states
+  filter(is.na(federal_in_state) == TRUE, is.na(state_in_partial) == TRUE) %>% 
+  # assign the in-between states as federal states
+  mutate(office_type = ifelse(coverage == "state-local", "federal_plan_office", office_type))
+
+
+
+complaints_by_office_3 = osha_complaints %>%
+  group_by(rid_state_key, office_type) %>% 
+  summarise(num = n()) %>% 
+  left_join(federal_state_plan_key, by = c("rid_state_key" = "state")) %>% 
+  #filter out the federal plan complaints that are in a state plan state
+  mutate(federal_in_state = case_when(
+    office_type == "federal_plan_office" & plan_type == "state_plan" & coverage == "private_state-local" ~ "remove"
+  )) %>% 
+  #this gets rid of the federal complaints in the state plan states
+  filter(is.na(federal_in_state) == TRUE) %>% 
+  # get rid of in-between states 
+  filter(rid_state_key != "CT", rid_state_key != "NJ", rid_state_key != "NY",rid_state_key != "ME", rid_state_key != "IL")
+
+
+
+#combine complaints by office to worker data
+#this was written in collaboration with my colleagues at the Howard Center for Investigative Journalism
+federal_vs_state_difference = function(complaints, worker){
+  
+  test1 = left_join(complaints, worker, by = c("rid_state_key" = "state.y"))
+
+test2 = test1 %>% mutate(complaints_per_ten_thousand_employee_2020 = (num/total_employment)*10000)
+
+test3 = test2 %>% group_by(office_type) %>%
+  filter(rid_state_key != "VI",rid_state_key != "UK" ) %>% 
+  summarise(sum_complaints_per_ten_thousand = sum(complaints_per_ten_thousand_employee_2020),
+avg_complaints_per_ten_thousand = mean(complaints_per_ten_thousand_employee_2020), 
+            median_complaints_per_ten_thousand = median(complaints_per_ten_thousand_employee_2020))
+return(test3)
+  
+}
+
+
+weighted_complaints1 = federal_vs_state_difference(complaints_by_office_1, worker_data)#This just gets rid of federal complaints in state plan states, does nothing to partial plan states 
+weighted_complaints2 = federal_vs_state_difference(complaints_by_office_2, worker_data) #This gets rid of federal complaints in state plan states and codes partials as federal plan states, also removes state plan complaints in partials
+weighted_complaints3 = federal_vs_state_difference(complaints_by_office_3, worker_data)#This gets rid of federal complaints in state plan states and gets rid of partial states altogether
+
+#Our recommendation: we should use the second table, which codes partials as federal plan and juices up federal numbers, with a sentence that says something like "In states where [these businesses] are covered by federal osha, there are seemingly less complaints per 10k workers"
+
+```
+
+# Comparing the number of inspectionsper ten thousand workers in federal and state plan states 
+```{r}
+inspections_by_office_1 = osha_complaints %>% 
+  filter(inspection_occured == "yes")%>%
+  group_by(rid_state_key, office_type) %>% 
+  summarise(num = n()) %>% 
+  left_join(federal_state_plan_key, by = c("rid_state_key" = "state")) %>% 
+  #filter out the federal plan complaints that are in a state plan state
+  mutate(federal_in_state = case_when(
+    office_type == "federal_plan_office" & plan_type == "state_plan" & coverage == "private_state-local" ~ "remove"
+  )) %>% 
+  #this gets rid of the federal complaints in the state plan states
+  filter(is.na(federal_in_state) == TRUE)
+
+inspections_by_office_2 = osha_complaints %>%
+  filter(inspection_occured == "yes")%>%
+  group_by(rid_state_key, office_type) %>% 
+  summarise(num = n()) %>% 
+  left_join(federal_state_plan_key, by = c("rid_state_key" = "state")) %>% 
+  #filter out the federal plan complaints that are in a state plan state
+  mutate(federal_in_state = case_when(
+    office_type == "federal_plan_office" & plan_type == "state_plan" & coverage == "private_state-local" ~ "remove"
+  )) %>% 
+  mutate(state_in_partial = case_when(
+    office_type == "state_plan_office" & plan_type == "state_plan" & coverage == "state-local" ~ "remove"
+  )) %>% 
+  #this gets rid of the federal complaints in the state plan states
+  filter(is.na(federal_in_state) == TRUE, is.na(state_in_partial) == TRUE) %>% 
+  # assign the in-between states as federal states
+  mutate(office_type = ifelse(coverage == "state-local", "federal_plan_office", office_type))
+
+
+inspections_by_office_3 = osha_complaints %>%
+  filter(inspection_occured == "yes")%>%
+  group_by(rid_state_key, office_type) %>% 
+  summarise(num = n()) %>% 
+  left_join(federal_state_plan_key, by = c("rid_state_key" = "state")) %>% 
+  #filter out the federal plan complaints that are in a state plan state
+  mutate(federal_in_state = case_when(
+    office_type == "federal_plan_office" & plan_type == "state_plan" & coverage == "private_state-local" ~ "remove"
+  )) %>% 
+  #this gets rid of the federal complaints in the state plan states
+  filter(is.na(federal_in_state) == TRUE) %>% 
+  # get rid of in-between states 
+  filter(rid_state_key != "CT", rid_state_key != "NJ", rid_state_key != "NY",rid_state_key != "ME", rid_state_key != "IL")
+
+
+weighted_inspections1 = federal_vs_state_difference(inspections_by_office_1, worker_data)#This just gets rid of federal complaints in state plan states, does nothing to partial plan states 
+weighted_inspections2 = federal_vs_state_difference(inspections_by_office_2, worker_data) #This gets rid of federal complaints in state plan states and codes partials as federal plan states
+weighted_inspections3 = federal_vs_state_difference(inspections_by_office_3, worker_data)##This gets rid of federal complaints in state plan states and gets rid of partial states altogether
+
+```
+
+
+## Analysis focused on New Mexico: function writing 
+# Read in New Mexico State Plan outbreak data 
+```{r}
+
+# read in outbreak data with associated complaints 
+nm_outbreaks_matches <- read_csv("new_mexico_data/verified_state_osha_matches_new_mexico.csv")%>%
+  clean_names()
+
+# read in outbreak data with no associated complaints 
+nm_outbreaks_nonmatches <- read_csv("new_mexico_data/new_mexico_nonmatches.csv")%>%
+  clean_names()
+
+# read in raw outbreak data
+nm_raw_outbreaks <- read_csv("new_mexico_data/new_mexico_rapid_responses_all.csv")%>%
+  clean_names()
+
+```
+
+# Find the number of outbreaks, categorized by the number of associated cases, for each individual establishment in NM
+```{r}
+
+#creating a function called "outbreaks_by_name"
+outbreaks_by_name <- function(dataframe){
+#extracting the name of the dataframe from the df we fed into the function
+ df_name <- deparse(substitute(dataframe))
+  df_name <- paste0("outbreaks_by_name_", df_name)
+ #building meat of the function: defining what it does
+ dataframe <- dataframe%>%
+  group_by(name, number_of_positive_cases_reported)%>%
+  count()%>%
+  rename(number_outbreaks = n)%>%
+  arrange(desc(number_of_positive_cases_reported))
+  
+ #taking the df we fed into function and pushing to global environment, and the name we give it in GE is the value we created in df_name 
+ assign(df_name, dataframe, envir = .GlobalEnv)
+  }
+
+outbreaks_by_name(nm_outbreaks_nonmatches)
+outbreaks_by_name(nm_outbreaks_matches)
+outbreaks_by_name(nm_raw_outbreaks)
+
+```
+
+# Create another function give us the total number of cases at every unique establishement through all outbreaks 
+```{r}
+# create another function, 
+cases_by_address <- function(x){
+#extracting the name of the dataframe from the df we fed into the function
+ df_name <- deparse(substitute(x))
+  df_name <- paste0("cases_by_address_", df_name)
+ #building meat of the function: defining what it does
+ x <- x%>%
+   group_by(name, address)%>%
+   summarize(sum_cases = sum(number_of_positive_cases_reported))%>%
+   arrange(desc(sum_cases))
+ #taking the df we fed into function and pushing to global environment, and the name we give it in GE is the value we created in df_name 
+ assign(df_name, x, envir = .GlobalEnv)
+}
+
+cases_by_address(nm_outbreaks_nonmatches)
+cases_by_address(nm_outbreaks_matches)
+cases_by_address(nm_raw_outbreaks)
+
+```
