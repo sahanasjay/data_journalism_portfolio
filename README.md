@@ -49,5 +49,7 @@ See my work [here](https://github.com/sahanasjay/data_journalism_portfolio/blob/
 
 To fact-check [two graphics](https://dbknews.com/2021/04/27/senior-edition-looking-back-survey/) using survey data for The Diamondback's 2021 Senior Edition, I loaded and cleaned the data and performed some analysis on it.
 
+I wrote and commented all code for the fact-check. 
+
 See my work [here](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/senior_edition_data_fact_check/senior_edition_data.Rmd). See the graphics [here](https://dbknews.com/2021/04/27/senior-edition-looking-back-survey/). 
  
