@@ -25,7 +25,7 @@ I went through the process of creating a data-driven story, spearheading a small
 
 My analysis led to the finding that Northern states, though they have less confederate symbols than Southern states, have a higher percentage of symbols removed. Additionally, I pinpointed three trees named after Robert E. Lee in California National Parks that hadn't been removed or renamed, even after almost half of the state's confederate symbols had been taken down. 
 
-I edited and commented all code for this project, and wrote the majority of it. 
+I edited, cleaned and commented all code for this project, and wrote the majority of it. 
 
 See my work [here](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/heritage_analysis_project/heritage_analysis_final.Rmd). 
 
