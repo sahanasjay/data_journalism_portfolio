@@ -10,11 +10,11 @@ output:
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
-## R Markdown
+##R Markdown
 
 This is an R Markdown document, detailing some of the work I have completed on a long-term investigative project at the Howard Center for Investigative Journalism. The project looks into worker safety during COVID-19 — and the ways in which government agencies and private companies alike failed essential workers. 
 
-## General Themes
+##General Themes
 
 
 
@@ -29,7 +29,7 @@ library(DT)
 ```
 
 ##Sources
-### This function is not written by me. It was created by one of my colleagues at the Howard Center, and served to combine some of the data read in below.
+####This function is not written by me. It was created by one of my colleagues at the Howard Center, and served to combine some of the data read in below.
 
 ```{r}
 
@@ -37,7 +37,7 @@ library(DT)
 source("sources/combine_osha_covid_19_complaint_data.R")
 ```
 
-# Read in OSHA complaint data
+###Read in OSHA complaint data
 ```{r}
 # read in closed complaints -------------------------
 osha_closed_complaints = read_excel("data/Closed_Federal_State_Plan_COVID-19_Complaints_Through_0307_2021.xlsx")
@@ -57,7 +57,7 @@ osha_complaints = osha_complaints %>%
 ```
 
 
-# Weighting by worker population
+###Weighting by worker population
 ```{r}
 # Data for weighting analysis -------------------------
 
@@ -78,7 +78,7 @@ worker_data = worker_data %>%  mutate(total_employment = total_employment_thousa
 
 ```
 
-# Finding the number of complaints per ten thousand workers in federal and state plan states 
+#Finding the number of complaints per ten thousand workers in federal and state plan states 
 ```{r}
 complaints_by_office_1 = osha_complaints %>% 
   group_by(rid_state_key, office_type) %>% 
@@ -150,7 +150,7 @@ weighted_complaints3 = federal_vs_state_difference(complaints_by_office_3, worke
 
 ```
 
-# Comparing the number of inspections per ten thousand workers in federal and state plan states 
+#Compare the number of inspections per ten thousand workers in federal and state plan states 
 ```{r}
 inspections_by_office_1 = osha_complaints %>% 
   filter(inspection_occured == "yes")%>%
@@ -204,8 +204,8 @@ weighted_inspections3 = federal_vs_state_difference(inspections_by_office_3, wor
 ```
 
 
-## Analysis focused on New Mexico: function writing 
-# Read in New Mexico State Plan outbreak data 
+##Analysis focused on New Mexico: function writing 
+###Read in New Mexico State Plan outbreak data 
 ```{r}
 
 # read in outbreak data with associated complaints 
@@ -222,7 +222,7 @@ nm_raw_outbreaks <- read_csv("new_mexico_data/new_mexico_rapid_responses_all.csv
 
 ```
 
-# Find the number of outbreaks, categorized by the number of associated cases, for each individual establishment in NM
+###Find the number of outbreaks, categorized by the number of associated cases, for each individual establishment in NM
 ```{r}
 
 #creating a function called 'outbreaks_by_name'
@@ -247,7 +247,7 @@ outbreaks_by_name(nm_raw_outbreaks)
 
 ```
 
-# Create another function give us the total number of cases at every unique establishement through all outbreaks 
+###Create another function give us the total number of cases at every unique establishement through all outbreaks 
 ```{r}
 # create another function called 'cases_by_address'
 cases_by_address <- function(x){
