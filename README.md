@@ -17,7 +17,7 @@ The analysis I did to get a count of outbreaks in New Mexico stores revealed tha
 
 Working on this project has exponentially increased my data analysis skills: in addition to learning how to create for loops and functions, I grew more comfortable with baseR, the tidyverse package, the lubridate package, the janitor package and many others. 
 
-The project will be published in May 2020. 
+I have abyline on the project, which was published on [AP](https://apnews.com/article/coronavirus-pandemic-health-business-caf5e31d883a18deae6cd367a5ee8978) and picked up by several notable outlets — including [The Washington Post](https://www.washingtonpost.com/business/walmart-sales-soared-essential-workers-got-scant-protection/2021/05/12/a4fe5d6a-b33f-11eb-bc96-fdf55de43bef_story.html). Read the full version on the Howard Center website [here](https://cnsmaryland.org/2021/05/12/as-walmart-sales-soared-workers-got-scant-covid-19-protection-from-osha/).
 
 ## Analysis of Southern Poverty Law center's Whose Heritage database
 
