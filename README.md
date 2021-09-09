@@ -1,7 +1,4 @@
 # Sahana's Data Journalism Work Samples
-* work sample 1
-* work sample 2 
-* work sample 3
 
 ## Overview
  
