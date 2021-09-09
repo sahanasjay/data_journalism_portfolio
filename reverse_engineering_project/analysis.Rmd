@@ -190,7 +190,7 @@ deaths_grouped_again
 
 The dead were overwhelmingly male and young: More than half were 21 or younger, including two children, ages 4 and 8, killed along with their mother. Slightly less than half of the victims— 47% — were behind the wheel. The rest were either passengers in the speeding vehicles, spectators or people simply walking on a sidewalk or driving home.
 
-
+# ALl of the code in this chunk was written by me
 ```{r}
 
 #Creates a new object called 'deaths_by_year_expanded' which grabs data from "streetracing"
