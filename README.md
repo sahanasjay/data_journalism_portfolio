@@ -1,5 +1,7 @@
 # Sahana's Data Journalism Work Samples
-
+* work sample 1
+* work sample 2 
+* work sample 3
 ## Overview
  
 This repository exists to show examples of the code I have written as a data journalist at the Howard Center for Investigative Journalism, and as deputy managing editor for The Diamondback. 
