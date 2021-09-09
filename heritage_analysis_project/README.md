@@ -1,4 +1,4 @@
-## Analysis of Southern Poverty Law center's Whose Heritage database
+# Analysis of Southern Poverty Law center's Whose Heritage database
 
 I went through the process of creating a data-driven story, spearheading a small group of classmates to parse the Southern Poverty Law Center's "Whose Heritage?" database, which contains a count of statues, placards, public parks, buildings and other symbols dedicated to the Confederacy.
 
