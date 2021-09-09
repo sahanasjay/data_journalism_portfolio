@@ -1,5 +1,12 @@
 # Sahana's Data Journalism Work Samples
 
+* Overview
+* Coding a webscraper
+* Working with APIs 
+* Creating dynamic folder structures, binding pdfs and guide text creation 
+* Data analysis 
+* Website
+
 ## Overview
  
 This repository exists to show examples of the code I have written as a data journalist at the Howard Center for Investigative Journalism, and as deputy managing editor for The Diamondback. 
