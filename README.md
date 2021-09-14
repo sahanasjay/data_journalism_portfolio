@@ -11,7 +11,7 @@
  
 This repository exists to show examples of the code I have written as a data journalist at the Howard Center for Investigative Journalism, and as deputy managing editor for The Diamondback. 
 
-The code samples are chosen to display my growth since first learning basic R in Fall 2020. Since then, I've written a worked as a data journalist for the Howard Center, acquiring more skills and securing a summer internship on the investigative center's data team. 
+The code samples are chosen to display my growth since first learning basic R in Fall 2020. Since then, I've written a webscraper and worked with APIs as a data journalist for the Howard Center, deepening my understanding of R and working to learn Python. 
 
 The majority of the code in this repository was written by me. 
 
