@@ -46,16 +46,6 @@ I have a byline on the project, which was published on [AP](https://apnews.com/a
 I cleaned three sets of data on lynching victims, combining them into a master dataframe that contains infomation about Black lynching victims from all three esets. I deepened my understanding of the tidyverse and janitor  packages, as well as baseR functions.
 
 
-## Analysis of Southern Poverty Law center's Whose Heritage database
-
-I went through the process of creating a data-driven story, spearheading a small group of classmates to parse the Southern Poverty Law Center's "Whose Heritage?" database, which contains a count of statues, placards, public parks, buildings and other symbols dedicated to the Confederacy.
-
-My analysis led to the finding that Northern states, though they have less confederate symbols than Southern states, have a higher percentage of symbols removed. Additionally, I pinpointed three trees named after Robert E. Lee in California National Parks that hadn't been removed or renamed, even after almost half of the state's confederate symbols had been taken down.
-
-I edited, cleaned and commented all code for this project, and wrote the majority of it.
-
-See my work [here](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/heritage_analysis_project/heritage_analysis_final.Rmd).
-
 ## Analysis of College Park housing prices  
 
 Even before I began learning how to code, I was writing data-driven stories. [This one](https://dbknews.com/2019/12/29/umd-college-park-student-housing-rent-prices-expensive-vacancy-commons-varsity-view/) centers on the astronomical student housing prices in College Park, Maryland — and why they're unlikely to come down anytime soon.
@@ -64,13 +54,6 @@ I researched and analyzed historical and current price ranges for several of the
 
 Read the story [here](https://dbknews.com/2019/12/29/umd-college-park-student-housing-rent-prices-expensive-vacancy-commons-varsity-view/).
 
-## Reverse engineering project
-
-I went through the process of [recreating core findings](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/reverse_engineering_project/analysis.Rmd) from "[Out of control](https://www.latimes.com/projects/la-me-street-racing/)", a story about street racing fatalities from the Los Angeles Times.
-
-I edited, cleaned and commented all of the code for this project, and wrote a significant portion of it.
-
-See my work [here](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/reverse_engineering_project/analysis.Rmd).
 
 ## Senior edition fact-check
 
