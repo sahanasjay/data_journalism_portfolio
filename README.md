@@ -1,11 +1,11 @@
 # Sahana's Data Journalism Work Samples
 
-* Overview
-* Coding a webscraper
-* Working with APIs
-* Creating dynamic folder structures, binding pdfs and guide text creation
-* Data analysis
-* Website
+* [Overview](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#overview)
+* [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#coding-web-scraper-for-library-of-congress-website)
+* [Working with APIs, creating dynamic folder structures, binding pdfs and automating guide text](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
+* [Data analysis](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#analysis-of-national-osha-records) 
+* [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#victim-data-cleaning)
+* [Website](link) 
 
 ## Overview
 
@@ -15,13 +15,13 @@ The code samples are chosen to display my growth since first learning basic R in
 
 The majority of the code in this repository was written by me.
 
-## Coding web scraper for Library of Congress website
+## Coding a web scraper for Library of Congress website
 
 This code was written as part of an ongoing Howard Center investigation into historically white-owned newspapers’ role in supporting racial terror.
 
 Starting with a list of current newspaper titles pulled down from the Library of Congress API, [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_portfolio/blob/dev/loc_webscraper/loc_scraper_hana.ipynb) collects information on each paper's antecedents — their titles, the dates they ran, the url and Library of Congress cataloguing number associated with each one. The result is a newspaper "family tree" of sorts that connects each current title with its historical relatives.  We joined this dataset with lynching victim data, gaining insight into which papers may have covered lynchings.
 
-## Working with API’s, creating dynamic directory structures, automating guide text and binding pdfs
+## Working with APIs, creating dynamic directory structures, automating guide text and binding pdfs
 
 In [loc_pdf_download_and_package.Rmd](), I wrote a function to hit the Library of Congress’ API and pull down newspaper page pdfs or ocr text from a 60-day window around a lynching date. As they’re downloaded, pdfs and ocr text are saved into a dynamic folder structure that reflects the newspaper issues each pdf belongs to. I used a proxy server to avoid library of congress rate limits, and implemented parallel processing to speed up the download process. I practiced error handling by writing if/else statements to bypass 404 page not found errors.
 
@@ -29,11 +29,7 @@ I used baseR lapply and map functions from the purrr package to replace for loop
 
 I wrote another function to combine the downloaded pdfs into packets, complete with automatically produced guide text pages that contained information about the contents of each packet.  
 
-To see my code, go to [name here](link). To see what the pdf download code produces, check out [name here](link here). To see what the pdf packaging code does, go to [name here](link).
-
-## Victim data cleaning
-
-I cleaned three sets of data on lynching victims, combining them into a master dataframe that contains infomation about Black lynching victims from all three esets. I deepened my understanding of the tidyverse and janitor  packages, as well as baseR functions.
+To see my code, go to [loc_pdf_download_and_package.Rmd](link). To see output from pdf download code, check out [newspaper_pdfs_example_set](link here). To see output from the pdf packaging code, go to [pdf_packets_bound_example](link).
 
 ## Analysis of national OSHA records
 
@@ -44,6 +40,11 @@ The analysis I did to get a count of outbreaks in New Mexico stores revealed tha
 Working on this project  exponentially increased my data analysis skills: in addition to learning how to create for loops and functions, I grew more comfortable with baseR, the tidyverse package, the lubridate package, the janitor package and many others.
 
 I have a byline on the project, which was published on [AP](https://apnews.com/article/coronavirus-pandemic-health-business-caf5e31d883a18deae6cd367a5ee8978) and picked up by several notable outlets — including [The Washington Post](https://www.washingtonpost.com/business/walmart-sales-soared-essential-workers-got-scant-protection/2021/05/12/a4fe5d6a-b33f-11eb-bc96-fdf55de43bef_story.html). Read the full version on the Howard Center website [here](https://cnsmaryland.org/2021/05/12/as-walmart-sales-soared-workers-got-scant-covid-19-protection-from-osha/).
+
+## Victim data cleaning
+
+I cleaned three sets of data on lynching victims, combining them into a master dataframe that contains infomation about Black lynching victims from all three esets. I deepened my understanding of the tidyverse and janitor  packages, as well as baseR functions.
+
 
 ## Analysis of Southern Poverty Law center's Whose Heritage database
 
