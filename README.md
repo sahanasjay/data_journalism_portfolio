@@ -1,27 +1,28 @@
 # Sahana's Data Journalism Work Samples
 
-* Overview
-* Coding a webscraper
-* Working with APIs
-* Creating dynamic folder structures, binding pdfs and guide text creation
-* Data analysis
-* Website
+* [Overview](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#overview)
+* [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#coding-a-web-scraper-for-library-of-congress-website)
+* [Working with APIs — and more](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
+* [Data analysis](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#analysis-of-national-osha-records) 
+* [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#victim-data-cleaning)
+* [Website](link) 
 
 ## Overview
 
-This repository exists to show examples of the code I have written as a data journalist at the Howard Center for Investigative Journalism, and as deputy managing editor for The Diamondback.
+This repository exists to show examples of the code I have written as a data journalist at the Howard Center for Investigative Journalism and as deputy managing editor for The Diamondback.
 
-The code samples are chosen to display my growth since first learning basic R in Fall 2020. Since then, I've written a worked as a data journalist for the Howard Center, acquiring more skills and securing a summer internship on the investigative center's data team.
+The code samples are chosen to display my growth since first learning basic R in Fall 2020. Since then, I've written a web scraper in Python, worked with APIs in R and secured positions interning at The Washington Post and the Howard Center for Investigative Journalism.  
 
-The majority of the code in this repository was written by me.
+All of the code in this repository was written by me. 
 
-## Coding web scraper for Library of Congress website
+
+## Coding a web scraper for Library of Congress website
 
 This code was written as part of an ongoing Howard Center investigation into historically white-owned newspapers’ role in supporting racial terror.
 
 Starting with a list of current newspaper titles pulled down from the Library of Congress API, [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_portfolio/blob/dev/loc_webscraper/loc_scraper_hana.ipynb) collects information on each paper's antecedents — their titles, the dates they ran, the url and Library of Congress cataloguing number associated with each one. The result is a newspaper "family tree" of sorts that connects each current title with its historical relatives.  We joined this dataset with lynching victim data, gaining insight into which papers may have covered lynchings.
 
-## Working with API’s, creating dynamic directory structures, automating guide text and binding pdfs
+## Working with APIs, creating dynamic directory structures, automating guide text and binding pdfs
 
 In [loc_pdf_download_and_package.Rmd](), I wrote a function to hit the Library of Congress’ API and pull down newspaper page pdfs or ocr text from a 60-day window around a lynching date. As they’re downloaded, pdfs and ocr text are saved into a dynamic folder structure that reflects the newspaper issues each pdf belongs to. I used a proxy server to avoid library of congress rate limits, and implemented parallel processing to speed up the download process. I practiced error handling by writing if/else statements to bypass 404 page not found errors.
 
@@ -29,11 +30,7 @@ I used baseR lapply and map functions from the purrr package to replace for loop
 
 I wrote another function to combine the downloaded pdfs into packets, complete with automatically produced guide text pages that contained information about the contents of each packet.  
 
-To see my code, go to [name here](link). To see what the pdf download code produces, check out [name here](link here). To see what the pdf packaging code does, go to [name here](link).
-
-## Victim data cleaning
-
-I cleaned three sets of data on lynching victims, combining them into a master dataframe that contains infomation about Black lynching victims from all three esets. I deepened my understanding of the tidyverse and janitor  packages, as well as baseR functions.
+To see my code, go to [loc_pdf_download_and_package.Rmd](link). To see output from pdf download code, check out [newspaper_pdfs_example_set](link here). To see output from the pdf packaging code, go to [pdf_packets_bound_example](link).
 
 ## Analysis of national OSHA records
 
@@ -45,15 +42,10 @@ Working on this project  exponentially increased my data analysis skills: in add
 
 I have a byline on the project, which was published on [AP](https://apnews.com/article/coronavirus-pandemic-health-business-caf5e31d883a18deae6cd367a5ee8978) and picked up by several notable outlets — including [The Washington Post](https://www.washingtonpost.com/business/walmart-sales-soared-essential-workers-got-scant-protection/2021/05/12/a4fe5d6a-b33f-11eb-bc96-fdf55de43bef_story.html). Read the full version on the Howard Center website [here](https://cnsmaryland.org/2021/05/12/as-walmart-sales-soared-workers-got-scant-covid-19-protection-from-osha/).
 
-## Analysis of Southern Poverty Law center's Whose Heritage database
+## Victim data cleaning
 
-I went through the process of creating a data-driven story, spearheading a small group of classmates to parse the Southern Poverty Law Center's "Whose Heritage?" database, which contains a count of statues, placards, public parks, buildings and other symbols dedicated to the Confederacy.
+I cleaned three sets of data on lynching victims, combining them into a master dataframe that contains infomation about Black lynching victims from all three esets. I deepened my understanding of the tidyverse and janitor  packages, as well as baseR functions.
 
-My analysis led to the finding that Northern states, though they have less confederate symbols than Southern states, have a higher percentage of symbols removed. Additionally, I pinpointed three trees named after Robert E. Lee in California National Parks that hadn't been removed or renamed, even after almost half of the state's confederate symbols had been taken down.
-
-I edited, cleaned and commented all code for this project, and wrote the majority of it.
-
-See my work [here](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/heritage_analysis_project/heritage_analysis_final.Rmd).
 
 ## Analysis of College Park housing prices  
 
@@ -63,13 +55,6 @@ I researched and analyzed historical and current price ranges for several of the
 
 Read the story [here](https://dbknews.com/2019/12/29/umd-college-park-student-housing-rent-prices-expensive-vacancy-commons-varsity-view/).
 
-## Reverse engineering project
-
-I went through the process of [recreating core findings](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/reverse_engineering_project/analysis.Rmd) from "[Out of control](https://www.latimes.com/projects/la-me-street-racing/)", a story about street racing fatalities from the Los Angeles Times.
-
-I edited, cleaned and commented all of the code for this project, and wrote a significant portion of it.
-
-See my work [here](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/reverse_engineering_project/analysis.Rmd).
 
 ## Senior edition fact-check
 
