@@ -14,10 +14,6 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 This is an R Markdown document, detailing some of the work I have completed on a long-term investigative project at the Howard Center for Investigative Journalism. The project looks into worker safety during COVID-19 — and the ways in which government agencies and private companies alike failed essential workers. 
 
-##General Themes
-
-
-
 ##Libraries
 ```{r}
 library(tidyverse)
