@@ -1,10 +1,10 @@
 # Sahana's Data Journalism Work Samples
 
-* [Overview](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#overview)
-* [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#coding-a-web-scraper-for-library-of-congress-website)
-* [Working with APIs, creating dynamic directories — and more](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
-* [Data analysis](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#analysis-of-national-osha-records) 
-* [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#victim-data-cleaning)
+* [Overview](https://github.com/sahanasjay/data_journalism_portfolio#overview)
+* [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio#coding-a-web-scraper-for-library-of-congress-website)
+* [Working with APIs, creating dynamic directories — and more](https://github.com/sahanasjay/data_journalism_portfolio#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
+* [Data analysis](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-national-osha-records) 
+* [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio#victim-data-cleaning)
 * [Data story](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-college-park-housing-prices)
 * [Graphics fact-check](https://github.com/sahanasjay/data_journalism_portfolio#senior-edition-fact-check)
 
