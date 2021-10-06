@@ -1,7 +1,7 @@
 # Sahana's Data Journalism Work Samples
 
 * [Overview](https://github.com/sahanasjay/data_journalism_portfolio#overview)
-* [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio#coding-a-web-scraper-for-library-of-congress-website)
+* [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio#coding-a-web-scraper-for-the-library-of-congress-website)
 * [Working with APIs, creating dynamic directories — and more](https://github.com/sahanasjay/data_journalism_portfolio#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
 * [Analysis of national OSHA records](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-national-osha-records) 
 * [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio#in-depth-cleaning-on-lynching-victim-data)
