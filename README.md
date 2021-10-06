@@ -49,15 +49,15 @@ I wrote the script in [victim_data_cleaning.Rmd](https://github.com/sahanasjay/d
 
 ## Analysis of College Park housing prices  
 
-Even before I began learning how to code, I was writing data-driven stories. [This one](https://dbknews.com/2019/12/29/umd-college-park-student-housing-rent-prices-expensive-vacancy-commons-varsity-view/) centers on the astronomical student housing prices in College Park, Maryland — and why they're unlikely to come down anytime soon.
+Even before I began learning how to code, I was writing data-driven stories. I wrote [this one](https://dbknews.com/2019/12/29/umd-college-park-student-housing-rent-prices-expensive-vacancy-commons-varsity-view/) as a city development reporter for my college paper. The piece centers on the astronomical student housing prices in College Park, Maryland — and why they're unlikely to come down anytime soon.
 
 I researched and analyzed historical and current price ranges for several of the most popular housing developments in the area, finding that monthly rent went up by as much as $30 for some developments in 2019.
 
-Read the [story](https://dbknews.com/2019/12/29/umd-college-park-student-housing-rent-prices-expensive-vacancy-commons-varsity-view/).
+Read the [story here](https://dbknews.com/2019/12/29/umd-college-park-student-housing-rent-prices-expensive-vacancy-commons-varsity-view/).
 
 
 ## Senior edition fact-check
 
-To fact-check [two graphics](https://dbknews.com/2021/04/27/senior-edition-looking-back-survey/) using survey data for The Diamondback's 2021 Senior Edition, I loaded and cleaned the data and performed some analysis on it.
+I fact-checked [two graphics](https://dbknews.com/2021/04/27/senior-edition-looking-back-survey/) using survey data for The Diamondback's 2021 Senior Edition, loading and cleaning the data and performing some analysis on it.
 
 See my work in [senior_edition_data.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/senior_edition_data_fact_check/senior_edition_data.Rmd). Check out the graphics on The Diamondback's [website](https://dbknews.com/2021/04/27/senior-edition-looking-back-survey/).
