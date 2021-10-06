@@ -1,10 +1,10 @@
 # Sahana's Data Journalism Work Samples
 
-* [Overview](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#overview)
-* [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#coding-a-web-scraper-for-library-of-congress-website)
-* [Working with APIs, creating dynamic directories — and more](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
-* [Data analysis](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#analysis-of-national-osha-records) 
-* [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio/tree/dev#victim-data-cleaning)
+* [Overview](https://github.com/sahanasjay/data_journalism_portfolio#overview)
+* [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio#coding-a-web-scraper-for-library-of-congress-website)
+* [Working with APIs, creating dynamic directories — and more](https://github.com/sahanasjay/data_journalism_portfolio#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
+* [Data analysis](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-national-osha-records) 
+* [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio#victim-data-cleaning)
 * [Data story](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-college-park-housing-prices)
 * [Graphics fact-check](https://github.com/sahanasjay/data_journalism_portfolio#senior-edition-fact-check)
 
@@ -18,7 +18,7 @@ The code samples are chosen to display my growth since first learning basic R in
 
 This code was written as part of an ongoing Howard Center investigation into historically white-owned newspapers’ role in supporting racial terror.
 
-Starting with a list of current newspaper titles pulled down from the Library of Congress API, [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_portfolio/blob/dev/loc_webscraper/loc_scraper_hana.ipynb) collects information on each paper's antecedents — their titles, the dates they ran, the url and Library of Congress cataloguing number associated with each one. The result is a newspaper "family tree" of sorts that connects each current title with its historical relatives.  We joined this dataset with lynching victim data, gaining insight into which papers may have covered lynchings.
+Starting with a list of current newspaper titles pulled down from the Library of Congress API, [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_webscraper/loc_scraper.ipynb) collects information on each paper's antecedents — their titles, the dates they ran, the url and Library of Congress cataloguing number associated with each one. The result is a newspaper "family tree" of sorts that connects each current title with its historical relatives.  We joined this dataset with lynching victim data, gaining insight into which papers may have covered lynchings.
 
 ## Working with APIs, creating dynamic directory structures, automating guide text and binding pdfs
 
