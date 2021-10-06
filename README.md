@@ -4,7 +4,7 @@
 * [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio#coding-a-web-scraper-for-library-of-congress-website)
 * [Working with APIs, creating dynamic directories — and more](https://github.com/sahanasjay/data_journalism_portfolio#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
 * [Analysis of national OSHA records](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-national-osha-records) 
-* [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio#victim-data-cleaning)
+* [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio#in-depth-cleaning-on-lynching-victim-data)
 * [Pitching and writing a data-driven story](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-college-park-housing-prices)
 * [Data fact-check](https://github.com/sahanasjay/data_journalism_portfolio#senior-edition-fact-check)
 
