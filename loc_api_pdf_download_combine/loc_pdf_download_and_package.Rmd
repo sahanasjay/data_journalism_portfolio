@@ -1,7 +1,5 @@
 ---
 title: "Newspaper Lynching Coverage"
-author: "test"
-date: "`r Sys.Date()`"
 output: html_document
 ---
 ```{r setup, include=FALSE}
@@ -12,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 
 # Load libraries
+
 # For data cleaning
 library(janitor)
 # For general data science
@@ -49,11 +48,11 @@ etl_current_titles_victims_distinct = readRDS('../data/processed/etl_current_tit
 ```{r}
 
 ## Use Library of Congress API to retrieve list of newspapers that are available in Chronicling America
-  # Store path to all newspapers -- not just CA titles -- API
+  # Store path to all newspapers 
   all_newspaper_path <- "https://chroniclingamerica.loc.gov/newspapers.json"
   # Get data from API, convert to readable object
   ca_available_newspaper_archives <- GET(all_newspaper_path)
-  # Select only the content from the respons and convert to characters
+  # Select only the content from the response and convert to characters
   ca_available_newspaper_archives <- fromJSON(rawToChar(ca_available_newspaper_archives$content))
   # Call data from the newspaper column in JSON
   ca_available_newspaper_archives <- ca_available_newspaper_archives$newspapers
@@ -100,15 +99,15 @@ test_dates <- head(ca_joined_to_current_titles_victims_distinct,10)
   }
 
 # Apply custom function to list using map function
-years_available_for_urls<- url_list%>%
+years_available_for_urls<- url_list %>%
     map(get_years_available)
 
 # Unnest and separate the years available column into its own df
-dates_available<- tibble(years_available_for_urls)%>%
-  unnest(cols = c(years_available_for_urls))%>%
+dates_available<- tibble(years_available_for_urls) %>%
+  unnest(cols = c(years_available_for_urls)) %>%
   select(dates_available)
 
-# bind the issue dates available for each newspaper to the df containing the rest of the newspaper info
+# Bind the issue dates available for each newspaper to the df containing the rest of the newspaper info
 ca_is_available <- test_dates %>%
     bind_cols(dates_available)
 
@@ -127,10 +126,9 @@ ca_is_available <- test_dates %>%
 
 ## Retrieve a list of the page urls for the newspaper issues of interest.
 ```{r}
-# Create a list of issue urls by calling the issue_url column and converting to a vector. This is the list that we will loop through to retrieve page urls for each newspaper issue.
+# Create a list of issue urls
 issue_url_list<- ca_is_available_dates_issued$issue_url
 
-#View(issue_url_list)
 issue_url_list<- as.vector(issue_url_list)
 
 # Create an empty dataframe to which we will add newspaper page urls
@@ -144,12 +142,12 @@ for (url in issue_url_list){
   if (issue_date_urls$status_code %in% c(200)){
   issue_date_urls <- fromJSON(rawToChar(issue_date_urls$content))
   issue_date_urls <- issue_date_urls$pages
-  issue_date_urls <- issue_date_urls%>%
+  issue_date_urls <- issue_date_urls %>%
     select(url)
   
 # Create a nested list of individual pdf page urls that exist for a single issue date
-  df_page_urls_only <- issue_date_urls%>%
-    nest(data=everything())
+  df_page_urls_only <- issue_date_urls %>%
+    nest(data = everything())
 
 # Create a df that contains just issue urls 
   temp_page_urls  <- tibble(
@@ -157,32 +155,33 @@ for (url in issue_url_list){
     )
 
 # Bind the issue urls to the df containing individual pdf page urls
-  temp_page_urls <- temp_page_urls%>%
-    bind_cols(df_page_urls_only)%>%
+  temp_page_urls <- temp_page_urls %>%
+    bind_cols(df_page_urls_only) %>%
     rename(page_urls = data)
 
-  page_urls_for_issue_dates <- page_urls_for_issue_dates%>%
+  page_urls_for_issue_dates <- page_urls_for_issue_dates %>%
     bind_rows(temp_page_urls)
   }
   else {
     print(status_code1)
-    page_urls_for_issue_dates <- page_urls_for_issue_dates%>%
+    page_urls_for_issue_dates <- page_urls_for_issue_dates %>%
       add_row(page_urls = list("NA"))
   }
 }
 
-page_urls_for_issue_dates<- page_urls_for_issue_dates%>%
+page_urls_for_issue_dates<- page_urls_for_issue_dates %>%
   select(page_urls)
 
-ca_is_available_page_urls <- ca_is_available_dates_issued%>%
+ca_is_available_page_urls <- ca_is_available_dates_issued %>%
   bind_cols(page_urls_for_issue_dates)
 
-ca_is_available_page_urls<- ca_is_available_page_urls%>%
-  rename(newspaper_json_url = url)%>%
-  unnest(page_urls, names_repair = "check_unique")%>%
+ca_is_available_page_urls<- ca_is_available_page_urls %>%
+  rename(newspaper_json_url = url) %>%
+  unnest(page_urls, names_repair = "check_unique") %>%
   rename(page_url = url)
   select(-page_urls)
 ```
+
 ## Download loc documentation
 start_slice is a numeric variable that represents the df row number that we are beginning our download with.
 end_slice is a numeric variable that represents the df row number that we are ending our download with.
@@ -192,7 +191,8 @@ time is a variable that represents the value of sys.sleep in seconds (using to g
 core_number is a variable representing the number of cores to be used in parallel processing.
 ```{r}
 download_newspaper_pages <- function(start_slice, end_slice, file_type, folder_path, time, core_number){
-  # Make a short version of sliced_page_urls to test with and add a unique_id column that uses row number
+
+# Make a short version of sliced_page_urls to test with and add a unique_id column that uses row number
 sliced_page_urls <- slice(ca_is_available_page_urls, start_slice:end_slice) %>%
   # Get rid of NA values
   filter(page_url != is.na(page_url)) %>%
@@ -200,9 +200,9 @@ sliced_page_urls <- slice(ca_is_available_page_urls, start_slice:end_slice) %>%
   mutate(file_url = str_replace(page_url,".json",file_type))
 
 # Create a list object that converts unique_id to a vector
-unique_id_list <- sliced_page_urls%>%
-  select(unique_id)%>%
-  as_vector()%>%
+unique_id_list <- sliced_page_urls %>%
+  select(unique_id) %>%
+  as_vector() %>%
   unname()
 
 # Define global folder path
@@ -210,7 +210,7 @@ folder_path <- folder_path
 
 # id is a variable that represents each individual url in a unique_id list
 mclapply(unique_id_list, function(id){
-    test_df <- sliced_page_urls%>%
+    test_df <- sliced_page_urls %>%
     filter(unique_id == id)
 
   # Define the variables that you want to keep
@@ -226,11 +226,12 @@ mclapply(unique_id_list, function(id){
   file_url <- test_df$file_url
   unique_id_save <- test_df$unique_id
  
-   # Go fetch!
+  # Go fetch!
   results<- GET(file_url)
   Sys.sleep(time)
   status_code <- results$status_code
-
+  
+  # Error handling
   if (results$status_code %in% c(200)){
 
     print(results$status_code)
@@ -255,12 +256,12 @@ mclapply(unique_id_list, function(id){
     print("error: user didn't enter correct format")
     }
   # Download pdfs
-  download.file(file_url, output_filepath, mode="wb")
+  download.file(file_url, output_filepath, mode = "wb")
   }
 
   else{
     print(results$status_code)
-  # End if/else
+  # Close if/else
   }  
 print}, mc.cores = core_number)
 print("done!")
@@ -286,14 +287,14 @@ package_files <- function(folder_path, type_of_file){
 # Looping through folders inside current_title_level_dirs. Folders represent unique victims
 for(folder in current_title_level_dirs){
   #Listing victim_level_dirs (each subfolder) within current_title_level_dirs
-  victim_level_dirs <- list.dirs(folder, recursive=FALSE)
+  victim_level_dirs <- list.dirs(folder, recursive = FALSE)
 
   # Looping through folders inside victim_level_dirs. Folders represent historic titles
   for(dir in victim_level_dirs){
     # Creating empty df to contain historic titles for each victim
     victim_guidetext_df <- tibble(lynch_title_for_victims = character())
     # Listing historic_title_level_dirs within victim_level_dirs
-    historic_title_level_dirs <- list.dirs(dir, recursive=FALSE)
+    historic_title_level_dirs <- list.dirs(dir, recursive = FALSE)
 
     # Looping through folders inside historic_title_level_dirs
     for(i in historic_title_level_dirs){
@@ -301,7 +302,7 @@ for(folder in current_title_level_dirs){
       lynch_title_for_victims <- sub(".*/", "",i)
       # Creating temporary df to enable row binding
       for_binding <- tibble(lynch_title_for_victims)
-      # Appending rows (for historical titles associated with a single victim) into "empty" df  
+      # Appending rows into "empty" df  
       victim_guidetext_df <- victim_guidetext_df%>%
           bind_rows(for_binding)
       # Listing issues folders (for each historical title)
@@ -321,15 +322,17 @@ for(folder in current_title_level_dirs){
         # Creating actual guide text
         issue_pdf_guidetext <- paste0(str_extract(issue, "\\issue_.*"))
         # Putting guide text on a single page pdf (with formatting)
-        pdf(issue_pdf_guidetext_filepath, paper="letter")
+        pdf(issue_pdf_guidetext_filepath, paper = "letter")
         plot.new()
-        text(x=.5, y=.5, issue_pdf_guidetext)  # first 2 numbers are xy-coordinates within [0, 1]
+        text(x = .5, y = .5, issue_pdf_guidetext)  # first 2 numbers are xy-coordinates within [0, 1]
         dev.off()
         # Combining issue page PDFs
-        pdf_combine(list.files(path=issue, pattern="pdf", full.names=TRUE), output = paste0(issue,"/", str_extract(issue,"\\issue_.*"), "_bound.pdf"))
+        pdf_combine(list.files(path = issue, pattern = "pdf", full.names = TRUE), output = paste0(issue,"/", str_extract(issue,"\\issue_.*"), "_bound.pdf"))
         }
-        #### NOTE: Majority of the else statements here are placeholder text for the ongoing portion of this project. They will be updated when the project is published. 
-        else{
+        
+        #### NOTE: The majority of the else statements here are placeholder text for an ongoing portion of this  project. They will be updated when the project is published. 
+       
+         else{
         # placeholder for ndc work:
         print("not a pdf")
         }
@@ -362,14 +365,15 @@ for(folder in current_title_level_dirs){
     # Using list objects to create dynamic guide text
     historic_title_level_guidetext <- paste0(lynch_title, ":", "\n", "issue_dates:", "\n", paste0(issue_dates, collapse = "\n"))
     # Adding guidetext to historical title pdf
-    pdf(historic_title_level_guidetext_filepath, paper="letter")
+    pdf(historic_title_level_guidetext_filepath, paper = "letter")
     plot.new()
-    text(x=.5, y=.5, historic_title_level_guidetext)  # first 2 numbers are xy-coordinates within [0, 1]
+    text(x = .5, y = .5, historic_title_level_guidetext)  # first 2 numbers are xy-coordinates within [0, 1]
     dev.off()
     # Creating historical title PDF (with issue date sections)
-    pdf_combine(list.files(path=i, pattern="bound", full.names=TRUE, recursive = TRUE), output = paste0(i,"/", "bound_historical_packet.pdf"))
+    pdf_combine(list.files(path = i, pattern = "bound", full.names = TRUE, recursive = TRUE),
+    output = paste0(i,"/", "bound_historical_packet.pdf"))
     # file remove guide text pdf page in historical folder
-      file.remove(list.files(path = i, pattern = "for_historic_", full.names = TRUE ))
+    file.remove(list.files(path = i, pattern = "for_historic_", full.names = TRUE ))
     }
     else{
     print("not a pdf")
@@ -378,7 +382,7 @@ for(folder in current_title_level_dirs){
     }
     # Creating list object of historical titles from victim guide text df
     lynch_title_for_victims <- victim_guidetext_df$lynch_title_for_victims
-    if(type_of_file== "pdf"){
+    if(type_of_file == "pdf"){
     # Creating filepath for victim PDF guide text
     victim_level_guidetext_filepath <- paste0(dir, "/", "for_victim_level_bound_text_packet.pdf")
     # Creating actual guide text for victim PDF
@@ -386,10 +390,11 @@ for(folder in current_title_level_dirs){
     # Adding guidetext to victim pdf
     pdf(victim_level_guidetext_filepath, paper="letter")
     plot.new()
-    text(x=.5, y=.5, victim_level_guidetext)  # first 2 numbers are xy-coordinates within [0, 1]
+    text(x = .5, y = .5, victim_level_guidetext)  # first 2 numbers are xy-coordinates within [0, 1]
     dev.off()
     # Creating victim pdf
-    pdf_combine(list.files(path=dir, pattern = "packet", full.names=TRUE, recursive = TRUE), output = paste0(dir, "/", "victim_level_bound_packet.pdf"))
+    pdf_combine(list.files(path = dir, pattern = "packet", full.names = TRUE, recursive = TRUE), 
+                output = paste0(dir, "/", "victim_level_bound_packet.pdf"))
     # file remove guide text pdf page in victim folder
     file.remove(list.files(path = dir, pattern = "for_victim_", full.names = TRUE ))
     }
