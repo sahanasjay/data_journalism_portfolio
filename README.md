@@ -14,11 +14,11 @@ Hi, I'm Sahana. 👋
 
 I created this repository to show examples of the code I've written as a data journalist at the Howard Center for Investigative Journalism and as deputy managing editor for The Diamondback.
 
-I chose code samples that best display my growth since I started learned basic R in Fall 2020. Since then, I've written a web scraper in Python, worked with APIs in R and secured positions interning at the Howard Center for Investigative Journalism and The Washington Post.   
+I chose code samples that best display my growth since I started learning basic R in Fall 2020. Since then, I've written a web scraper in Python, worked with APIs in R and secured positions interning at the Howard Center for Investigative Journalism and The Washington Post.   
 
 ## Coding a web scraper for the Library of Congress' website
 
-Starting with a list of current newspaper titles from the Library of Congress API, [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_webscraper/loc_scraper.ipynb) collects information on each paper's antecedents — their titles, the dates they ran, the url and Library of Congress cataloguing number associated with each one. The result is a newspaper "family tree" of sorts that connects each current title with its historical relatives.  
+Starting with a list of current newspaper titles from the Library of Congress API, [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_webscraper/loc_scraper.ipynb) collects information on each paper's antecedents — their titles, the dates they ran, their URLS and their Library of Congress cataloguing numbers. The result is a newspaper "family tree"; a dataset connecting each current title with its historical relatives.  
 
 Scraping this data was a crucial first step to finding out which current papers may have once covered lynching. The script was my first foray into Python — but my colleague and I had a working scraper running in about a week.
 
@@ -26,9 +26,9 @@ I wrote this code for Howard Center investigation into historically white-owned 
 
 ## Working with APIs, creating dynamic directory structures, automating guide text and binding pdfs
 
-In [loc_api_pdf_download_combine.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_api_pdf_download_combine/loc_pdf_download_and_package.Rmd), I wrote code that uses the Library of Congress' API to locate and download newspaper page PDFs and OCR text from the 60-day window surrounding a lynching date. As they're downloaded, one of my custom functions saves the files into a dynamic folder structure that reflects the newspaper each file belongs to. Another custom function binds PDFs into  packets, adding automated guidetext to help reporters navigate the contents of each booklet. I practiced error handling and  experimented with parallell processing, making my download code more efficient.
+In [loc_api_pdf_download_combine.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_api_pdf_download_combine/loc_pdf_download_and_package.Rmd), I wrote code that uses the Library of Congress' API to locate and download newspaper page PDFs and OCR text from the 60-day window surrounding a lynching date. As they're downloaded, a custom function saves the files into a dynamic folder structure that reflects the newspaper titles each file belongs to. Another custom function binds the PDFs into  packets, adding automated guidetext to help reporters navigate the contents of each booklet. I practiced error handling and experimented with parallell processing, making my download code more efficient.
 
-My work helped kick off the search for lynching coverage in newspapers, part of a Howard Center investigation into historically white-owned newspapers’ role in supporting and inciting racial terror. The project will be published in December
+My work helped kick off the search for lynching coverage in newspapers, part of a Howard Center investigation into historically white-owned newspapers’ role in supporting and inciting racial terror. The project will be published in December. 
 
 To see my code, go to [loc_api_pdf_download_combine.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_api_pdf_download_combine/loc_pdf_download_and_package.Rmd). To see output from the pdf download function, check out [newspaper_pdfs_example_set](https://github.com/sahanasjay/data_journalism_portfolio/tree/main/loc_api_pdf_download_combine/newspaper_pdfs_example_set). To see output from the pdf packaging code, go to [pdf_packets_bound_example](https://github.com/sahanasjay/data_journalism_portfolio/tree/main/loc_api_pdf_download_combine/pdf_packets_bound_example/current_title_Daily%20herald/victim_1936-08-14).
 
@@ -44,8 +44,7 @@ I have a byline on the project, which was published on [AP](https://apnews.com/a
 
 ## In-depth cleaning on lynching victim data 
 
-I wrote the script in [victim_data_cleaning.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/victim_data_cleaning/victims_newspaper_lineage%20copy.Rmd) to scrub and combine three sets of data on lynching victims and people threatened with lynching. The project deepened my understanding of the tidyverse and janitor packages — baseR functions, too.
-
+I wrote the code in [victim_data_cleaning.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/victim_data_cleaning/victims_newspaper_lineage%20copy.Rmd) to scrub and combine three sets of data on lynching victims and people threatened with lynching. The project deepened my understanding of the tidyverse and janitor packages — baseR functions, too.
 
 ## Analysis of College Park housing prices  
 
@@ -54,7 +53,6 @@ Even before I began learning how to code, I was writing data-driven stories. I w
 I researched and analyzed historical and current price ranges for several of the most popular housing developments in the area, finding that monthly rent went up by as much as $30 for some developments in 2019.
 
 Read the [story here](https://dbknews.com/2019/12/29/umd-college-park-student-housing-rent-prices-expensive-vacancy-commons-varsity-view/).
-
 
 ## Senior edition fact-check
 
