@@ -18,15 +18,15 @@ I chose code samples that best display my growth since I started learning basic 
 
 ## Coding a web scraper for the Library of Congress' website
 
-Starting with a list of current newspaper titles from the Library of Congress API, [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_webscraper/loc_scraper.ipynb) collects information on each paper's antecedents — their titles, the dates they ran, their URLS and their Library of Congress cataloguing numbers. The result is a newspaper "family tree"; a dataset connecting each current title with its historical relatives.  
+I co-wrote [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_webscraper/loc_scraper.ipynb), a scraper that uses a list of current newspaper titles from the Library of Congress' API to collect information on each paper's antecedent: their titles, the dates they ran, their URLS and their Library of Congress cataloguing numbers. The result is a newspaper "family tree"; a dataset connecting each current title with its historical relatives.  
 
 Scraping this data was a crucial first step to finding out which current papers may have once covered lynching. The script was my first foray into Python — but my colleague and I had a working scraper running in about a week.
 
-I wrote this code for Howard Center investigation into historically white-owned newspapers’ role in supporting and inciting racial terror. The project will be published in December
+I wrote this code for a Howard Center investigation into historically white-owned newspapers’ role in supporting and inciting racial terror. The project will be published in December
 
 ## Working with APIs, creating dynamic directory structures, automating guide text and binding pdfs
 
-In [loc_api_pdf_download_combine.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_api_pdf_download_combine/loc_pdf_download_and_package.Rmd), I wrote code that uses the Library of Congress' API to locate and download newspaper page PDFs and OCR text from the 60-day window surrounding a lynching date. As they're downloaded, a custom function saves the files into a dynamic folder structure that reflects the newspaper titles each file belongs to. Another custom function binds the PDFs into  packets, adding automated guidetext to help reporters navigate the contents of each booklet. I practiced error handling and experimented with parallell processing, making my download code more efficient.
+In [loc_api_pdf_download_combine.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_api_pdf_download_combine/loc_pdf_download_and_package.Rmd), I wrote code that uses the Library of Congress' API to locate and download newspaper page PDFs and OCR text from a 60-day window surrounding a lynching date. As they're downloaded, a custom function saves the files into a dynamic folder structure that reflects the newspaper each file belongs to. Another custom function binds the PDFs into packets, adding automated guidetext to help reporters navigate the contents of each booklet. I practiced error handling and experimented with parallell processing, making my download code more efficient.
 
 My work helped kick off the search for lynching coverage in newspapers, part of a Howard Center investigation into historically white-owned newspapers’ role in supporting and inciting racial terror. The project will be published in December. 
 
@@ -44,7 +44,7 @@ I have a byline on the project, which was published on [AP](https://apnews.com/a
 
 ## In-depth cleaning on lynching victim data 
 
-I wrote the code in [victim_data_cleaning.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/victim_data_cleaning/victims_newspaper_lineage%20copy.Rmd) to scrub and combine three sets of data on lynching victims and people threatened with lynching. The project deepened my understanding of the tidyverse and janitor packages — baseR functions, too.
+I wrote the code in [victim_data_cleaning.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/victim_data_cleaning/victims_newspaper_lineage%20copy.Rmd) to scrub and combine three sets of data on lynching victims and people threatened with lynching. The project deepened my understanding of baseR functions, the tidyverse and janitor. 
 
 ## Analysis of College Park housing prices  
 
@@ -56,6 +56,6 @@ Read the [story here](https://dbknews.com/2019/12/29/umd-college-park-student-ho
 
 ## Senior edition fact-check
 
-I fact-checked [two graphics](https://dbknews.com/2021/04/27/senior-edition-looking-back-survey/) using survey data for The Diamondback's 2021 Senior Edition, loading and cleaning the data and performing some analysis on it.
+I fact-checked [two graphics](https://dbknews.com/2021/04/27/senior-edition-looking-back-survey/) using survey data for The Diamondback's 2021 Senior Edition. I loaded and cleaning the data and performed some analysis on it.
 
 See my work in [senior_edition_data.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/senior_edition_data_fact_check/senior_edition_data.Rmd). Check out the graphics on The Diamondback's [website](https://dbknews.com/2021/04/27/senior-edition-looking-back-survey/).
