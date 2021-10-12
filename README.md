@@ -12,7 +12,7 @@
 
 Hi, I'm Sahana. 👋
 
-I created this repository to show examples of the code I've written as a data journalist at the Howard Center for Investigative Journalism and as deputy managing editor for The Diamondback.
+I created this repository to display examples of the code I've written as a data journalist at the Howard Center for Investigative Journalism and as deputy managing editor for The Diamondback.
 
 I chose code samples that best display my growth since I started learning basic R in Fall 2020. Since then, I've written a web scraper in Python, worked with APIs in R and secured positions interning at the Howard Center for Investigative Journalism and The Washington Post.   
 
