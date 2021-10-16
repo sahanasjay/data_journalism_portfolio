@@ -22,7 +22,7 @@ I co-wrote [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_por
 
 Scraping this data was a crucial first step to finding out which current papers may have once covered lynching. The script was my first foray into Python — but my colleague and I had a working scraper running in about a week.
 
-I wrote this code for a Howard Center investigation into historically white-owned newspapers’ role in supporting and inciting racial terror. The project will be published in December
+I wrote this code for a Howard Center investigation into historically white-owned newspapers’ role in supporting and inciting racial terror. The project will be published in December.
 
 ## Working with APIs, creating dynamic directory structures, automating guide text and binding pdfs
 
