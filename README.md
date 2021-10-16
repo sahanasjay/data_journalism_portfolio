@@ -3,7 +3,7 @@
 * [Overview](https://github.com/sahanasjay/data_journalism_portfolio#overview)
 * [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio#coding-a-web-scraper-for-the-library-of-congress-website)
 * [Working with APIs, creating dynamic directories — and more](https://github.com/sahanasjay/data_journalism_portfolio#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
-* [Creating a Personal Website]()
+* [Creating a Personal Website](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/README.md#creating-my-personal-website)
 * [Analysis of national OSHA records](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-national-osha-records) 
 * [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio#in-depth-cleaning-on-lynching-victim-data)
 * [Pitching and writing a data-driven story](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-college-park-housing-prices)
@@ -33,7 +33,7 @@ My work helped kick off the search for lynching coverage in newspapers, part of 
 
 To see my code, go to [loc_api_pdf_download_combine.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_api_pdf_download_combine/loc_pdf_download_and_package.Rmd). To see output from the pdf download function, check out [newspaper_pdfs_example_set](https://github.com/sahanasjay/data_journalism_portfolio/tree/main/loc_api_pdf_download_combine/newspaper_pdfs_example_set). To see output from the pdf packaging code, go to [pdf_packets_bound_example](https://github.com/sahanasjay/data_journalism_portfolio/tree/main/loc_api_pdf_download_combine/pdf_packets_bound_example/current_title_Daily%20herald/victim_1936-08-14).
 
-## Writing my personal website 
+## Creating my personal website 
 
 I created a personal website using ZURB's Foundation 6. I designed and coded the responsive site myself using HTML, CSS and basic JavaScript. Check it out [here](https://sahanasjay.github.io). 
 
