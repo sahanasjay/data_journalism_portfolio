@@ -49,7 +49,7 @@ I have a byline on the project, which was published on [AP](https://apnews.com/a
 
 ## In-depth cleaning on lynching victim data 
 
-I wrote the code in [victim_data_cleaning.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/victim_data_cleaning/victims_newspaper_lineage%20copy.Rmd) to scrub and combine three sets of data on lynching victims and people threatened with lynching. The project deepened my understanding of baseR functions, the tidyverse and janitor. 
+I wrote the code in [victim_data_cleaning.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/victim_data_cleaning/victims_data_cleaning.Rmd) to scrub and combine three sets of data on lynching victims and people threatened with lynching. The project deepened my understanding of baseR functions, the tidyverse and janitor. 
 
 ## Analysis of College Park housing prices  
 
