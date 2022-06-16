@@ -1,0 +1,487 @@
+---
+title: "fatal-crash-findings"
+author: "Sahana Jayaraman"
+date: "12-1-2021"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(widgetframe_self_contained = FALSE) 
+knitr::opts_chunk$set(widgetframe_isolate_widgets = TRUE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+# Findings on fatal crashes 
+This RMD serves as documentation of analytical findings for a data-driven story on D.C. traffic deaths. The analysis below shows that fatalities in the District have been steadily rising for more than a decade, despite the city's implementstion of a strategy to eliminate deaths by 2024. Lower-income communities east of the Anacostia river bore the brunt of the impact: Across the eight years analyzed, nearly half of all deaths occurred in Wards 7 and 8. 
+
+Four of the five neighborhoods with the most deaths over the past eight years are home to majority-Black residents. Meanwhile, five majority-white and higher-income neighborhoods had no traffic deaths during the period analyzed. 
+
+## load libraries
+```{r}
+
+library(knitr)
+library(tidyverse)
+library(janitor)
+library(lubridate)
+library(readxl)
+library(writexl)
+library(sf)
+library(leaflet)
+library(htmltools)
+library(viridis)
+library(DT)
+library(vroom)
+
+```
+
+## Load and clean data
+```{r}
+# fatalities data: acquired from DDOT, with one added by OCME
+fatalities_ddot <- read_xlsx("../../data/clean/v0/input/11_15_ccns_ddot.xlsx")
+
+# census tracts, 2019 
+census_tracts_2019 <-  st_read("../../data/clean/v0/input/tl_2019_11_tract/tl_2019_11_tract.shp") %>%
+  clean_names()
+
+# demographics from 2020 census, refit to 2010 census tracts by Ted  
+demographics_2019_tracts <- read_csv("../../data/clean/v0/input/dc_2019_tracts_short.csv") %>%
+  clean_names()
+
+# tracts-to-hpn crosswalk: This  is a crosswalk matching 2010 D.C. census tracts to D.C. Health planning neighborhoods
+tracts_to_neighborhoods <- read_csv("../../data/clean/v0/input/neighborhoods_to_tracts.csv") %>%
+  clean_names() %>%
+  mutate(geoid = as.character(geoid))
+
+# shapefile of D.C. wards 
+wards_shp <- st_read("../../data/clean/v0/input/Ward_from_2012/Ward_from_2012.shp") %>%
+  clean_names() 
+
+# shapefile of D.C. health planning neighborhoods
+neighborhoods_shp <- st_read("../../data/clean/v0/input/DC_Health_Planning_Neighborhoods/DC_Health_Planning_Neighborhoods.shp") %>%
+  clean_names() %>% 
+  mutate(name = case_when(
+    name == "N 24 FOGGY BOTTOM/GWU" ~ "N24 FOGGY BOTTOM/GWU",
+    TRUE ~ name
+  )) # the extra space here messes with analysis. Removing to make this uniform. 
+
+# Setting crs of neighborhood and ward data to match the NAD83 data from every other file 
+neighborhoods_shp <- st_transform(neighborhoods_shp, st_crs(4269))
+
+wards_shp <- st_transform(wards_shp, st_crs(4269))
+  
+
+# medical examiners records of traffic fatalities and DDOT fatalities data, joined after creation of hand-checked crosswalk
+me_ddot_joined <- vroom("../../data/clean/v0/output/me_ddot_joined.csv") 
+
+crashes <- read_rds("../../data/clean/v0/input/df_crashes.rds") %>% 
+  clean_names() %>%
+  mutate(date = as_date(fromdate),
+         year = year(date),
+         month = month(date),
+         day = day(date)) %>%
+  rename(fatal_passenger = fatalpassenger) %>% 
+  # distincting on ccn removes duplicate crashes; ccn is the report number associated with an individual crash. Checked crash numbers with DDOT and PIO confirmed. 
+  distinct(ccn, .keep_all = TRUE) %>%
+  filter(year >= "2014") 
+
+
+```
+
+## Clean fatalities and display as data table
+```{r}
+
+fatalities_ddot_clean <- fatalities_ddot %>%
+  clean_names() %>%
+  mutate(crash_date_clean = as_date(crash_date_and_time), 
+         year = year(crash_date_clean)) %>%
+  select(-c("death_case_number","jurisdiction", "death_case_year" )) %>%
+  filter(year >= "2014") %>%
+  mutate(ccn_clean = str_remove_all(ccn, "-"),
+         id = row_number(), .before = ccn,  
+         address_location = tolower(address_location)) 
+
+# For reporters to sort and filter
+datatable(fatalities_ddot_clean)
+
+```
+
+## Fatalities weighted by yearly crashes
+
+Findings: 2020 and 2021 particularly interesting; they have the least crashes and the most deaths per crash
+```{r}
+
+# yearly total crashes, confirmed by PIO 
+crashes_grouped <- crashes %>% 
+  group_by(year) %>% 
+  summarise(number_crashes = n())
+
+# yearly fatalities 
+fatalities_grouped <- fatalities_ddot_clean %>%
+  group_by(year) %>%
+  summarise(number_fatalities = n())
+
+# fatalities by 5k crashes 
+fatalities_by_5k_crash <- fatalities_grouped %>% 
+  left_join(crashes_grouped, by = "year") %>%
+  mutate(fatalities_per_5k_crashes = (number_fatalities/number_crashes)*5000) 
+  
+datatable(fatalities_by_5k_crash)
+
+```
+## Breakdown on the death types per year 
+
+Findings: Pedestrians saw the most fatalities across the years 
+```{r}
+
+death_type <- fatalities_ddot_clean %>% 
+  group_by(death_type, year) %>%
+  mutate(death_type = case_when(death_type == "sco" ~ "scooter", TRUE ~ death_type)) %>%
+  summarise(number_individuals = n()) %>%
+  pivot_wider(names_from = "year", values_from = "number_individuals") %>%
+  mutate_at(c(2:9), ~replace(., is.na(.), 0)) %>% 
+  clean_names() %>% 
+  rowwise() %>%
+  mutate(total_deaths = sum(x2014 + x2015 + x2016 + x2017 + x2018 + x2019 + x2020 + x2021)) %>%
+  arrange(desc(total_deaths))
+
+datatable(death_type)
+
+```
+
+## Breakdown of the people who died 
+
+Findings: We don't know the race of 46 of the people who died — but of the folks we do know, the majority of the dead are Black. At least 144 of the 250 people who died were Black; that's likely an undercount. 
+```{r}
+# by race 
+death_race <- me_ddot_joined %>% 
+  group_by(race) %>% 
+  summarise(number_victims = n()) %>%
+  arrange(desc(number_victims))
+
+datatable(death_race)
+#datatable(death_race_type)
+```
+## Deaths in age groups 
+
+Findings: More than 40% of the people who died were between 20 and 40. 
+```{r}
+deaths_age_groups <- me_ddot_joined %>% 
+  mutate(age_group =  case_when(age_clean>= 0 & age_clean < 10 ~ "<10",
+                                age_clean>= 10 & age_clean<= 19 ~ "10-19",
+                                age_clean>= 20 & age_clean<= 29 ~ "20-29",
+                                age_clean>= 30 & age_clean<= 39 ~ "30-39",
+                                age_clean>= 40 & age_clean<= 49 ~ "40-49",
+                                age_clean>= 50 & age_clean<= 59 ~ "50-59",
+                                age_clean>= 60 & age_clean<= 69 ~ "60-69",
+                                age_clean>= 70 & age_clean<= 79 ~ "70-79",
+                                age_clean>= 80 & age_clean<= 89 ~ "80-89",
+                                age_clean>= 90 ~ "90+")) 
+
+deaths_age_summary <- deaths_age_groups %>% group_by(age_group) %>% count() 
+
+# breakdown by 5 years, to test 
+deaths_age_groups_shorter <- me_ddot_joined %>% 
+  mutate(age_group =  case_when(age_clean>= 0 & age_clean < 5 ~ "<5",
+                                age_clean>= 5 & age_clean<= 9 ~ "5-9",
+                                age_clean>= 10 & age_clean<= 14 ~ "10-14",
+                                age_clean>= 15 & age_clean<= 19 ~ "15-19",
+                                age_clean>= 20 & age_clean<= 24 ~ "20-24",
+                                age_clean>= 25 & age_clean<= 29 ~ "25-29",
+                                age_clean>= 30 & age_clean<= 34 ~ "30-34",
+                                age_clean>= 35 & age_clean<= 39 ~ "35-39",
+                                age_clean>= 40 & age_clean<= 44 ~ "40-44",
+                                age_clean>= 45 & age_clean<= 49 ~ "45-49",
+                                age_clean>= 50 & age_clean<= 54 ~ "50-54",
+                                age_clean>= 55 & age_clean<= 59 ~ "55-59",
+                                age_clean>= 60 & age_clean<= 64 ~ "60-64",
+                                age_clean>= 65 & age_clean<= 69 ~ "65-69",
+                                age_clean>= 70 & age_clean<= 74 ~ "70-74",
+                                age_clean>= 75 & age_clean<= 79 ~ "75-79",
+                                age_clean>= 80 & age_clean<= 84 ~ "80-84",
+                                age_clean>= 85 & age_clean<= 89 ~ "85-89",
+                                age_clean>= 90 & age_clean<= 94 ~ "90-94",
+                                age_clean>= 95 ~ "95+")) %>%
+  group_by(age_group) %>% 
+  count() %>% 
+  arrange (desc(n))
+
+datatable(deaths_age_summary)
+datatable(deaths_age_groups_shorter)
+```
+
+## Cluster map of each individual crash, across dc and by road
+
+Findings: Roads identified with some of the most deaths — NY AVE. NE, SOUTHERN AVE SE. and ALABAMA AVE SE. 
+```{r}
+
+leaflet(fatalities_ddot_clean) %>%
+  addTiles(options = providerTileOptions(minZoom = 10, maxZoom = 20)) %>% 
+  addMarkers(lat = ~y, lng = ~x,
+             label = ~id,
+              clusterOptions = markerClusterOptions()) 
+
+# create a df that filters for the word you're looking for in the data 
+# Variable road is the name of the road you're looking for. Can be regex 
+
+fatalities_road <- function(road){
+df <- fatalities_ddot_clean %>%
+  filter(str_detect(address_location, road))
+
+leaflet(df) %>%
+  addTiles(options = providerTileOptions(minZoom = 10, maxZoom = 20)) %>% 
+  addMarkers(lat = ~y, lng = ~x,
+             label = ~id,
+              clusterOptions = markerClusterOptions()) 
+}
+
+fatalities_road("southern")
+
+```
+
+## Deaths by neighborhood 
+
+Note: 10 of the deaths were **right** along the border of DC, just beyond the boundaries of the city's shapefile. Using a census tract map, I placed those fatalities into the census tracts they would be in (and thus, the neighborhoods they'd be in). MPD responded to them all, and they're all counted in DDOT's records of traffic deaths in DC. For those on the border of two tracts, I tested the analysis with the death counted in either tract to ensure it wouldn't affect findings. 
+```{r}
+
+crashes_shp <- st_as_sf(fatalities_ddot_clean, coords = c("x", "y"), crs = 4269)
+
+deaths_with_geoid <- st_join(crashes_shp, census_tracts_2019) %>%
+  mutate(is_border = ifelse(
+    is.na(geoid), "y", "n"
+  )) %>%
+  mutate(geoid = ifelse(id == "1", "11001006202",
+                        ifelse(id == "5", "11001009508",
+                               ifelse(id == "30", "11001011100",
+                                      ifelse(id == "118", "11001001001",
+                                             ifelse(id == "206", "11001007304",
+                                                    ifelse(id == "227", "11001009902",
+                                                           ifelse(id == "231", "11001007603",
+                                                                  ifelse(id == "239", "11001007409",
+                                                                         ifelse(id == "242", "11001007707",
+                                                                                ifelse(id == "246", "11001009811", geoid)
+                                                                                ))))))))))%>%
+  select(id, ccn, death_type, address_location, ward, crash_date_and_time, crash_date_clean, year, ccn_clean, geoid, is_border, geometry)
+
+# join deaths with geoid to tracts-to-neighborhoods crosswalk to get deaths with census tract and neighborhood designations  
+fatalities_neighborhoods <- deaths_with_geoid %>%
+  left_join(tracts_to_neighborhoods, by = "geoid")
+
+datatable(fatalities_neighborhoods)
+
+# count number of deaths by neighborhood over all years
+deaths_by_neighborhood <- fatalities_neighborhoods %>%
+  group_by(hpn_label, code) %>%
+  count() %>%
+  arrange(desc(n))
+
+# count number of deaths by neighborhood year-over-year 
+death_by_neighborhood_year <- fatalities_neighborhoods%>%
+  group_by(hpn_label, code, year) %>%
+  count()
+
+# transforming deaths by neighborhoods by year into a dataframe 
+death_by_neighborhood_year <- as.data.frame(death_by_neighborhood_year)%>%
+  select(-geometry)%>%
+  pivot_wider(names_from = "year", values_from = "n") %>%
+  mutate_if(is.numeric, as.character) %>%
+  mutate_at(c(3:10), ~replace(., is.na(.), 0)) %>% 
+    mutate_at(3:10, as.numeric) %>%
+  pivot_longer(cols = 3:10, names_to = "year", values_to = "n" ) 
+
+# year-over-year deaths by neighborhood and total deaths, organized for display 
+dbny_display <- death_by_neighborhood_year %>% 
+  pivot_wider(names_from = "year", values_from = "n")%>% 
+  clean_names() %>% 
+  relocate(x2019, .before = x2020) %>% 
+  rowwise() %>%
+  mutate(total_deaths = sum(x2014 + x2015 + x2016 + x2017 + x2018 + x2019 + x2020 + x2021))
+
+# see deaths by neighborhood, by year
+datatable(dbny_display)
+
+```
+
+## Death types by neighborhood 
+```{r}
+
+death_type_neighborhood <- as.data.frame(fatalities_neighborhoods) %>%
+  group_by(death_type, hpn_label) %>%
+  count() %>%
+  select(1,2,3) 
+
+datatable(death_type_neighborhood)
+
+```
+
+## Demographics by neighborhood
+```{r}
+# join census demographics to tracts-to-neighborhoods 
+demographics_tracts <- tracts_to_neighborhoods%>%
+  mutate(geoid = as.numeric(geoid)) %>%
+  left_join(demographics_2019_tracts, by = "geoid")
+
+# get populations by neighborhood
+pops_by_nbh <- demographics_tracts %>%
+  group_by(hpn_label, code) %>%
+  select(-c("hu20", "occhu20")) %>%
+  summarise_at(vars(7:26), sum) %>%
+  select(1:6, 13) %>%
+  mutate(percent_black = (black20/totpop20)*100) %>%
+  mutate(percent_hisp = (hisp20/totpop20)*100) %>%
+  mutate(percent_white = (white20/totpop20)*100) %>%
+  mutate(percent_kid = ((totpop20 - a_totpop20)/totpop20)*100)
+
+
+# join deaths  them both to neighborhoods_shp
+neighborhoods_shp_joined <- neighborhoods_shp %>%
+  left_join(as.data.frame(deaths_by_neighborhood), by = "code") %>%
+  left_join(pops_by_nbh, by = "code") %>%
+  mutate(n = as.character(n),
+    n = case_when(
+    is.na(n) ~ "0",
+    TRUE ~ n
+  ),
+  n =  as.numeric(n))
+
+```
+
+## Fatalities by ward — a few different ways
+Wards 7 and 8, together, have about 45% percent of all deaths. Ward 8 has more deaths than wards 6, 4 and 1 put together. 
+```{r}
+
+# grouping and counting deaths by wards as encoded by DDOT
+# note: DDOT mis coded 2 deaths into the wrong wards. Ward 7 had 53 deaths, not 54
+fatal_ward <- fatalities_ddot_clean %>% 
+  group_by(ward) %>% 
+  count() %>% 
+  arrange(desc(n))
+
+datatable(fatal_ward)
+
+# checking DDOT ward encoding with a spatial join, points (fatalities) to polygons (wards)
+deaths_by_ward_shp <- crashes_shp  %>%
+  st_join(wards_shp) %>%
+  group_by(ward.y) %>%
+  count()
+
+# Leaflet choropleth of deaths by wards, as visual aid
+fatal_ward_polygon <- wards_shp %>% 
+  st_join(deaths_by_ward_shp) %>% 
+  rename("deaths" = "n")
+
+pal <- colorNumeric("viridis", domain = fatal_ward_polygon$deaths, reverse = TRUE)
+
+fatal_ward_polygon %>%
+  leaflet() %>%
+  addTiles(options = providerTileOptions(minZoom = 10, maxZoom = 20)) %>%
+  addPolygons(fillColor = ~pal(deaths), color = "#444444", weight = 1, smoothFactor = 0.5,
+    opacity = 1.0, fillOpacity = 0.8, 
+    highlightOptions = highlightOptions(color = "white", weight = 2,
+    bringToFront = TRUE),
+    label = ~ward,
+    labelOptions = labelOptions(
+    style = list("font-weight" = "normal", padding = "3px 8px"),
+    textsize = "8px",
+    direction = "auto")) %>%
+  addLegend(pal = pal, values = ~deaths, opacity = 0.8,
+  position = "topright")
+
+
+```
+
+## Choropleth building
+
+A function to build choropleths. 
+
+**df**: a variable denoting the dataframe to use 
+
+**column**: a variable denoting the column to use as the domain for the choropleth; numeric values that color shading should be determined by. Also used in hover labels
+
+**label**: a variable denoting the column that should be used for the labels that appear when someone hovers over parts of the map
+
+**title**: a variable purely for labeling, to denote what the figures in 'column' are measuring (deaths, demographics, etc.)
+```{r}
+
+heatmap <- function(df, column, label, title){
+
+pal <- colorNumeric("viridis", domain = column, reverse = TRUE)
+
+labels <- sprintf(
+  "<strong>%s</strong><br/>%g %s",
+  label, column, title
+) %>% lapply(HTML)
+
+df %>%
+  leaflet() %>%
+  addTiles(options = providerTileOptions(minZoom = 10, maxZoom = 20)) %>%
+  addPolygons(fillColor = ~pal(column), color = "#444444", weight = 1, smoothFactor = 0.5,
+    opacity = 1.0, fillOpacity = 0.8, 
+    highlightOptions = highlightOptions(color = "white", weight = 2,
+    bringToFront = TRUE),
+    label = labels,
+    labelOptions = labelOptions(
+    style = list("font-weight" = "normal", padding = "3px 8px"),
+    textsize = "8px",
+    direction = "auto"))%>%
+  addLegend(pal = pal, values = ~column, opacity = 0.8, title = title,
+  position = "topright")
+}
+```
+
+## Fatalities across neighborhoods and years
+
+Findings: It appears more fatalities are ocurring in majority Black neighborhoods than in majority white ones. Neighborhoods with the most deaths were: Twining, the National Mall area, Saint Elizabeth's, Chinatown, Fort Licoln and Licoln heights. 
+```{r}
+heatmap(neighborhoods_shp_joined, neighborhoods_shp_joined$n, neighborhoods_shp_joined$dc_hpn_nam, "Fatalities" )
+
+```
+
+## Percent Black, per neighborhood
+```{r}
+
+heatmap(neighborhoods_shp_joined, neighborhoods_shp_joined$percent_black, neighborhoods_shp_joined$dc_hpn_nam, "percent Black")
+```
+## Percent white, per neighborhood
+```{r}
+
+heatmap(neighborhoods_shp_joined, neighborhoods_shp_joined$percent_white, neighborhoods_shp_joined$dc_hpn_nam, "percent white")
+
+```
+
+## Crashes, all years, individual maps
+
+Findings: Year to year, the pattern of where crashes are ocurring changes a little bit. They remaiin concentrated in the same general area, however: Clustered around the commercial areas of U st., chinatown and the national mall and in residential neighborhoods that line the NE and SE sides.
+```{r}
+
+# year-by-year fatality + neighborhood + demographics data, for single-year and year-by-year maps
+neighborhoods_shp_joined_yr <- neighborhoods_shp %>%
+  left_join(death_by_neighborhood_year, by = "code") %>%
+  left_join(pops_by_nbh, by = "code")
+
+ggplot(neighborhoods_shp_joined_yr) +
+  geom_sf(aes(fill = n), color = "black")+
+  theme_void() +
+  scale_fill_viridis(direction = -1) +
+  facet_wrap(vars(year))
+
+```
+
+## Fatality maps by year 
+```{r}
+
+staticmap <- function(number){
+  
+neighborhoods_shp_joined_short <<- neighborhoods_shp_joined_yr%>%
+  filter(year == number)
+ 
+ggplot(neighborhoods_shp_joined_short) +
+  geom_sf(aes(fill = n), color = "black")+
+  theme_void() +
+  scale_fill_viridis(direction = -1) 
+} 
+  
+staticmap("2021")
+
+```
