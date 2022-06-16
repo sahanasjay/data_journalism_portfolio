@@ -3,6 +3,7 @@
 * [Overview](https://github.com/sahanasjay/data_journalism_portfolio#overview)
 * [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio#coding-a-web-scraper-for-the-library-of-congress-website)
 * [Working with APIs, creating dynamic directories — and more](https://github.com/sahanasjay/data_journalism_portfolio#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
+* [Creating a Personal Website](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/README.md#creating-my-personal-website)
 * [Analysis of national OSHA records](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-national-osha-records) 
 * [In-depth data cleaning](https://github.com/sahanasjay/data_journalism_portfolio#in-depth-cleaning-on-lynching-victim-data)
 * [Pitching and writing a data-driven story](https://github.com/sahanasjay/data_journalism_portfolio#analysis-of-college-park-housing-prices)
@@ -18,11 +19,11 @@ I chose code samples that best display my growth since I started learning basic 
 
 ## Coding a web scraper for the Library of Congress' website
 
-I co-wrote [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_webscraper/loc_scraper.ipynb), a scraper that uses a list of current newspaper titles from the Library of Congress' API to collect information on each paper's antecedents: their titles, the dates they ran, their URLS and their Library of Congress cataloguing numbers. The result is a newspaper "family tree"; a dataset connecting each current title with its historical relatives.  
+I co-wrote [loc_scraper.ipnyb](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_webscraper/loc_scraper.ipynb), a scraper that uses a list of current newspaper titles from the Library of Congress' API to collect information on each paper's antecedents: their titles, the dates they ran, their URLS and their Library of Congress cataloguing numbers. I came up with a way to check and nix duplicate links from the output dataframes. The result is a newspaper "family tree"; a dataset connecting each current title with its historical relatives.  
 
 Scraping this data was a crucial first step to finding out which current papers may have once covered lynching. The script was my first foray into Python — but my colleague and I had a working scraper running in about a week.
 
-I wrote this code for a Howard Center investigation into historically white-owned newspapers’ role in supporting and inciting racial terror. The project will be published in December
+I wrote this code for a Howard Center investigation into historically white-owned newspapers’ role in supporting and inciting racial terror. The project will be published in December.
 
 ## Working with APIs, creating dynamic directory structures, automating guide text and binding pdfs
 
@@ -32,9 +33,13 @@ My work helped kick off the search for lynching coverage in newspapers, part of 
 
 To see my code, go to [loc_api_pdf_download_combine.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/loc_api_pdf_download_combine/loc_pdf_download_and_package.Rmd). To see output from the pdf download function, check out [newspaper_pdfs_example_set](https://github.com/sahanasjay/data_journalism_portfolio/tree/main/loc_api_pdf_download_combine/newspaper_pdfs_example_set). To see output from the pdf packaging code, go to [pdf_packets_bound_example](https://github.com/sahanasjay/data_journalism_portfolio/tree/main/loc_api_pdf_download_combine/pdf_packets_bound_example/current_title_Daily%20herald/victim_1936-08-14).
 
+## Creating my personal website 
+
+I created a personal website using ZURB's Foundation 6. I designed and coded the responsive site myself using HTML, CSS and basic JavaScript. Check it out [here](https://sahanasjay.github.io). 
+
 ## Analysis of national OSHA records
 
-The weighted comparative analysis in [OSHA_investigation_samples.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/howard_center_OSHA_investigation_examples/OSHA_investigation_samples.Rmd) on OSHA complaints in federal and state-plan states returned one of the key findings in the Howard Center for Investigative Journalism's stories on worker safety during COVID-19.
+The weighted comparative analysis in [OSHA_investigation_samples.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/OSHA_investigation_examples/OSHA_investigation_samples.Rmd) on OSHA complaints in federal and state-plan states returned one of the key findings in the Howard Center for Investigative Journalism's stories on worker safety during COVID-19.
 
 The analysis I did to get a count of outbreaks in New Mexico stores revealed that nearly all the Walmart-owned stores in the state had seen an associated coronavirus outbreak.
 
@@ -44,7 +49,7 @@ I have a byline on the project, which was published on [AP](https://apnews.com/a
 
 ## In-depth cleaning on lynching victim data 
 
-I wrote the code in [victim_data_cleaning.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/victim_data_cleaning/victims_newspaper_lineage%20copy.Rmd) to scrub and combine three sets of data on lynching victims and people threatened with lynching. The project deepened my understanding of baseR functions, the tidyverse and janitor. 
+I wrote the code in [victim_data_cleaning.Rmd](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/victim_data_cleaning/victims_data_cleaning.Rmd) to scrub and combine three sets of data on lynching victims and people threatened with lynching. The project deepened my understanding of baseR functions, the tidyverse and janitor. 
 
 ## Analysis of College Park housing prices  
 
