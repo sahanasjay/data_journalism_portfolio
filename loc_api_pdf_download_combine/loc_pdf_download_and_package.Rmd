@@ -1,6 +1,8 @@
 ---
-title: "Newspaper Lynching Coverage"
-output: html_document
+title: "Code sample: Using APIs and downloading pdfs"
+output:
+  html_document: default
+  pdf_document: default
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -10,7 +12,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 
 # Load libraries
-
 # For data cleaning
 library(janitor)
 # For general data science
@@ -39,7 +40,7 @@ library(XML)
 
 ### Missing data: The data this code works with was not included because it is part of an ongoing project. If you would like access to the underlying data, please email me at [sahanasjayaraman@gmail.com](mailto:sahanasjayaraman@gmail.com).
 ```{r}
-#load data on lynching victims and current newspapers
+# load data on lynching victims and current newspapers
 etl_current_titles_victims_distinct = readRDS('../data/processed/etl_current_titles_victims_distinct.rds')
 ```
 
@@ -269,7 +270,7 @@ print("done!")
 ```
 
 ## Download page pdfs from LOC using function
-### For an example of what this download code produces, see [newspaper_pdfs_example_set](link here)
+### For an example of what this download code produces, see [newspaper_pdfs_example_set](https://github.com/sahanasjay/data_journalism_portfolio/tree/main/loc_api_pdf_download_combine/newspaper_pdfs_example_set)
 ```{r}
 
 download_newspaper_pages(1,5000,".pdf", "D:\\newspaper_pdfs", 1, 4) 
@@ -412,8 +413,7 @@ for(folder in current_title_level_dirs){
 ```
 
 ## Run package script
-### For an example of what this download code produces, see [pdf_packets_bound_example](link here)
+### For an example of what this download code produces, see [pdf_packets_bound_example](https://github.com/sahanasjay/data_journalism_portfolio/tree/main/loc_api_pdf_download_combine/pdf_packets_bound_example)
 ```{r}
 package_files("output_data/newspaper_pdfs", "pdf")
 ```
-
