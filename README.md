@@ -1,8 +1,8 @@
 # Sahana's Data Journalism Work Samples
 
 * [Overview](https://github.com/sahanasjay/data_journalism_portfolio#overview)
-* [Creating a bot](#)
-* [Geospatial analysis for a story on traffic deaths in dc](#)
+* [Creating a bot](https://github.com/sahanasjay/data_journalism_portfolio#creating-a-bot)
+* [Geospatial analysis for a story on traffic deaths in dc](https://github.com/sahanasjay/data_journalism_portfolio#geospatial-analysis-for-a-story-on-traffic-deaths-in-dc)
 * [Coding a webscraper](https://github.com/sahanasjay/data_journalism_portfolio#coding-a-web-scraper-for-the-library-of-congress-website)
 * [Working with APIs, creating dynamic directories — and more](https://github.com/sahanasjay/data_journalism_portfolio#working-with-apis-creating-dynamic-directory-structures-automating-guide-text-and-binding-pdfs)
 * [Creating a Personal Website](https://github.com/sahanasjay/data_journalism_portfolio/blob/main/README.md#creating-my-personal-website)
