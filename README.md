@@ -21,7 +21,7 @@ I chose code samples that best display my growth since I started learning basic 
 
 ## Geospatial analysis for a story on traffic deaths in dc
 
-I acquired, cleaned, hand-joined and spatially analyzed records from the District Department of Transportation and the Medical Examiner's office. My work revealed that fatalities were at a 14-year high nearly a decade after the District's mayor launched a strategy to eliminate traffic deaths by 2024, and that lower-income neighborhoods bore the brunt of the impact. See my code [here](https://sahanasjay.github.io/portfolio/final_rmd_example.html).
+I acquired, cleaned, hand-joined and spatially analyzed records from the District Department of Transportation and the Medical Examiner's office. My work revealed that fatalities were at a 14-year high nearly a decade after the District's mayor launched a strategy to eliminate traffic deaths by 2024, and that lower-income neighborhoods bore the brunt of the impact. Read the story [here](https://www.washingtonpost.com/transportation/2022/02/23/dc-traffic-deaths-highest-record/) and see my code [here](https://sahanasjay.github.io/portfolio/final_rmd_example.html).
 
 ## Creating a bot
 
